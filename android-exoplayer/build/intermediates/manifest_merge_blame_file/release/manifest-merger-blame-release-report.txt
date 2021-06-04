@@ -1,0 +1,79 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    xmlns:tools="http://schemas.android.com/tools"
+4    package="com.brentvatne.react"
+5    android:versionCode="1"
+6    android:versionName="1.0" >
+7
+8    <uses-sdk
+8-->/Users/macOs/Desktop/androidproj/swann-mobile-app/node_modules/react-native-video/android-exoplayer/src/main/AndroidManifest.xml:14:5-16
+9        android:minSdkVersion="23"
+9-->/Users/macOs/Desktop/androidproj/swann-mobile-app/node_modules/react-native-video/android-exoplayer/src/main/AndroidManifest.xml:14:5-16
+10        android:targetSdkVersion="29" />
+10-->/Users/macOs/Desktop/androidproj/swann-mobile-app/node_modules/react-native-video/android-exoplayer/src/main/AndroidManifest.xml:14:5-16
+11
+12    <uses-permission android:name="android.permission.INTERNET" />
+12-->/Users/macOs/Desktop/androidproj/swann-mobile-app/node_modules/react-native-video/android-exoplayer/src/main/AndroidManifest.xml:6:5-66
+12-->/Users/macOs/Desktop/androidproj/swann-mobile-app/node_modules/react-native-video/android-exoplayer/src/main/AndroidManifest.xml:6:22-64
+13    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+13-->/Users/macOs/Desktop/androidproj/swann-mobile-app/node_modules/react-native-video/android-exoplayer/src/main/AndroidManifest.xml:7:5-78
+13-->/Users/macOs/Desktop/androidproj/swann-mobile-app/node_modules/react-native-video/android-exoplayer/src/main/AndroidManifest.xml:7:22-76
+14    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+14-->/Users/macOs/Desktop/androidproj/swann-mobile-app/node_modules/react-native-video/android-exoplayer/src/main/AndroidManifest.xml:8:5-79
+14-->/Users/macOs/Desktop/androidproj/swann-mobile-app/node_modules/react-native-video/android-exoplayer/src/main/AndroidManifest.xml:8:22-77
+15    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+15-->/Users/macOs/Desktop/androidproj/swann-mobile-app/node_modules/react-native-video/android-exoplayer/src/main/AndroidManifest.xml:9:5-80
+15-->/Users/macOs/Desktop/androidproj/swann-mobile-app/node_modules/react-native-video/android-exoplayer/src/main/AndroidManifest.xml:9:22-78
+16    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+16-->/Users/macOs/Desktop/androidproj/swann-mobile-app/node_modules/react-native-video/android-exoplayer/src/main/AndroidManifest.xml:10:5-76
+16-->/Users/macOs/Desktop/androidproj/swann-mobile-app/node_modules/react-native-video/android-exoplayer/src/main/AndroidManifest.xml:10:22-74
+17
+18    <uses-feature
+18-->/Users/macOs/Desktop/androidproj/swann-mobile-app/node_modules/react-native-video/android-exoplayer/src/main/AndroidManifest.xml:12:5-86
+19        android:name="android.software.leanback"
+19-->/Users/macOs/Desktop/androidproj/swann-mobile-app/node_modules/react-native-video/android-exoplayer/src/main/AndroidManifest.xml:12:19-59
+20        android:required="false" />
+20-->/Users/macOs/Desktop/androidproj/swann-mobile-app/node_modules/react-native-video/android-exoplayer/src/main/AndroidManifest.xml:12:60-84
+21    <uses-feature
+21-->/Users/macOs/Desktop/androidproj/swann-mobile-app/node_modules/react-native-video/android-exoplayer/src/main/AndroidManifest.xml:13:5-89
+22        android:name="android.hardware.touchscreen"
+22-->/Users/macOs/Desktop/androidproj/swann-mobile-app/node_modules/react-native-video/android-exoplayer/src/main/AndroidManifest.xml:13:19-62
+23        android:required="false" />
+23-->/Users/macOs/Desktop/androidproj/swann-mobile-app/node_modules/react-native-video/android-exoplayer/src/main/AndroidManifest.xml:13:63-87
+24
+25    <application
+25-->/Users/macOs/Desktop/androidproj/swann-mobile-app/node_modules/react-native-video/android-exoplayer/src/main/AndroidManifest.xml:16:5-35:19
+26        android:allowBackup="false"
+26-->/Users/macOs/Desktop/androidproj/swann-mobile-app/node_modules/react-native-video/android-exoplayer/src/main/AndroidManifest.xml:18:9-36
+27        android:largeHeap="true"
+27-->/Users/macOs/Desktop/androidproj/swann-mobile-app/node_modules/react-native-video/android-exoplayer/src/main/AndroidManifest.xml:17:9-33
+28        tools:targetApi="29" >
+28-->/Users/macOs/Desktop/androidproj/swann-mobile-app/node_modules/react-native-video/android-exoplayer/src/main/AndroidManifest.xml:19:9-29
+29        <service
+29-->/Users/macOs/Desktop/androidproj/swann-mobile-app/node_modules/react-native-video/android-exoplayer/src/main/AndroidManifest.xml:23:9-29:19
+30            android:name="com.brentvatne.exoplayer.PlayerDownloadService"
+30-->/Users/macOs/Desktop/androidproj/swann-mobile-app/node_modules/react-native-video/android-exoplayer/src/main/AndroidManifest.xml:23:18-79
+31            android:exported="false" >
+31-->/Users/macOs/Desktop/androidproj/swann-mobile-app/node_modules/react-native-video/android-exoplayer/src/main/AndroidManifest.xml:24:13-37
+32            <intent-filter>
+32-->/Users/macOs/Desktop/androidproj/swann-mobile-app/node_modules/react-native-video/android-exoplayer/src/main/AndroidManifest.xml:25:13-28:29
+33                <action android:name="com.google.android.exoplayer.downloadService.action.RESTART" />
+33-->/Users/macOs/Desktop/androidproj/swann-mobile-app/node_modules/react-native-video/android-exoplayer/src/main/AndroidManifest.xml:26:17-101
+33-->/Users/macOs/Desktop/androidproj/swann-mobile-app/node_modules/react-native-video/android-exoplayer/src/main/AndroidManifest.xml:26:25-99
+34
+35                <category android:name="android.intent.category.DEFAULT" />
+35-->/Users/macOs/Desktop/androidproj/swann-mobile-app/node_modules/react-native-video/android-exoplayer/src/main/AndroidManifest.xml:27:17-75
+35-->/Users/macOs/Desktop/androidproj/swann-mobile-app/node_modules/react-native-video/android-exoplayer/src/main/AndroidManifest.xml:27:27-73
+36            </intent-filter>
+37        </service>
+38        <service
+38-->/Users/macOs/Desktop/androidproj/swann-mobile-app/node_modules/react-native-video/android-exoplayer/src/main/AndroidManifest.xml:31:9-33:38
+39            android:name="com.google.android.exoplayer2.scheduler.PlatformScheduler$PlatformSchedulerService"
+39-->/Users/macOs/Desktop/androidproj/swann-mobile-app/node_modules/react-native-video/android-exoplayer/src/main/AndroidManifest.xml:31:18-115
+40            android:exported="true"
+40-->/Users/macOs/Desktop/androidproj/swann-mobile-app/node_modules/react-native-video/android-exoplayer/src/main/AndroidManifest.xml:33:13-36
+41            android:permission="android.permission.BIND_JOB_SERVICE" />
+41-->/Users/macOs/Desktop/androidproj/swann-mobile-app/node_modules/react-native-video/android-exoplayer/src/main/AndroidManifest.xml:32:13-69
+42    </application>
+43
+44</manifest>
