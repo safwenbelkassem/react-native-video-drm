@@ -1,0 +1,25 @@
+-- Merging decision tree log ---
+manifest
+ADDED from /Users/macOs/Desktop/Desktop/androidproj/swann-mobile-app/node_modules/react-native-video/android-exoplayer/exo/library/ui/src/main/AndroidManifest.xml:17:1-55
+INJECTED from /Users/macOs/Desktop/Desktop/androidproj/swann-mobile-app/node_modules/react-native-video/android-exoplayer/exo/library/ui/src/main/AndroidManifest.xml:17:1-55
+INJECTED from /Users/macOs/Desktop/Desktop/androidproj/swann-mobile-app/node_modules/react-native-video/android-exoplayer/exo/library/ui/src/main/AndroidManifest.xml:17:1-55
+	package
+		ADDED from /Users/macOs/Desktop/Desktop/androidproj/swann-mobile-app/node_modules/react-native-video/android-exoplayer/exo/library/ui/src/main/AndroidManifest.xml:17:11-53
+		INJECTED from /Users/macOs/Desktop/Desktop/androidproj/swann-mobile-app/node_modules/react-native-video/android-exoplayer/exo/library/ui/src/main/AndroidManifest.xml
+		INJECTED from /Users/macOs/Desktop/Desktop/androidproj/swann-mobile-app/node_modules/react-native-video/android-exoplayer/exo/library/ui/src/main/AndroidManifest.xml
+	xmlns:android
+		ADDED from /Users/macOs/Desktop/Desktop/androidproj/swann-mobile-app/node_modules/react-native-video/android-exoplayer/exo/library/ui/src/main/AndroidManifest.xml:17:1-55
+uses-sdk
+INJECTED from /Users/macOs/Desktop/Desktop/androidproj/swann-mobile-app/node_modules/react-native-video/android-exoplayer/exo/library/ui/src/main/AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from /Users/macOs/Desktop/Desktop/androidproj/swann-mobile-app/node_modules/react-native-video/android-exoplayer/exo/library/ui/src/main/AndroidManifest.xml
+INJECTED from /Users/macOs/Desktop/Desktop/androidproj/swann-mobile-app/node_modules/react-native-video/android-exoplayer/exo/library/ui/src/main/AndroidManifest.xml
+INJECTED from /Users/macOs/Desktop/Desktop/androidproj/swann-mobile-app/node_modules/react-native-video/android-exoplayer/exo/library/ui/src/main/AndroidManifest.xml
+INJECTED from /Users/macOs/Desktop/Desktop/androidproj/swann-mobile-app/node_modules/react-native-video/android-exoplayer/exo/library/ui/src/main/AndroidManifest.xml
+	android:targetSdkVersion
+		INJECTED from /Users/macOs/Desktop/Desktop/androidproj/swann-mobile-app/node_modules/react-native-video/android-exoplayer/exo/library/ui/src/main/AndroidManifest.xml
+		ADDED from /Users/macOs/Desktop/Desktop/androidproj/swann-mobile-app/node_modules/react-native-video/android-exoplayer/exo/library/ui/src/main/AndroidManifest.xml
+		INJECTED from /Users/macOs/Desktop/Desktop/androidproj/swann-mobile-app/node_modules/react-native-video/android-exoplayer/exo/library/ui/src/main/AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from /Users/macOs/Desktop/Desktop/androidproj/swann-mobile-app/node_modules/react-native-video/android-exoplayer/exo/library/ui/src/main/AndroidManifest.xml
+		ADDED from /Users/macOs/Desktop/Desktop/androidproj/swann-mobile-app/node_modules/react-native-video/android-exoplayer/exo/library/ui/src/main/AndroidManifest.xml
+		INJECTED from /Users/macOs/Desktop/Desktop/androidproj/swann-mobile-app/node_modules/react-native-video/android-exoplayer/exo/library/ui/src/main/AndroidManifest.xml
