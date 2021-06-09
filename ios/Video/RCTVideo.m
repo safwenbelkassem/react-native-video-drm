@@ -476,10 +476,12 @@ AssetPersistenceManager *assetPersistenceManager;
                 [self setAutomaticallyWaitsToMinimizeStalling:_automaticallyWaitsToMinimizeStalling];
             }
             
+            
             //Perform on next run loop, otherwise onVideoLoadStart is nil
             if (self.onVideoLoadStart) {
                 id uri = [self->_source objectForKey:@"uri"];
                 id type = [self->_source objectForKey:@"type"];
+     
                 self.onVideoLoadStart(@{@"src": @{
                                                 @"uri": uri ? uri : [NSNull null],
                                                 @"type": type ? type : [NSNull null],
@@ -2414,7 +2416,8 @@ didCancelLoadingRequest:(AVAssetResourceLoadingRequest *)loadingRequest {
             NSString *certificateStringUrl = (NSString *)[self->_drm objectForKey:@"certificateUrl"];
             
             NSLog(@"entered fairplay %@",url.host);
-            
+            accountId =  [[self->_source objectForKey:@"accountId"] stringValue];
+            NSLog(@"account ID === %@",accountId);
             NSString *keyAssetID = [url.absoluteString stringByAppendingString:accountId];
             NSString *assetIDString = [[NSURL alloc] initWithString:keyAssetID].absoluteString;
            

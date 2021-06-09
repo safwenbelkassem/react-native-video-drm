@@ -318,11 +318,14 @@ export default class Video extends Component {
 
     let uri = source.uri || '';
     let chapterID = source.chapterID || '';
+    let accountId = source.accountId || '';
     let token = source.token || '';
 
     if (uri && uri.match(/^\//)) {
       uri = `file://${uri}`;
     }
+
+    console.log('account id in video =====',accountId);
 
     if (!uri) {
       console.warn('Trying to load empty source.');
@@ -358,6 +361,7 @@ export default class Video extends Component {
         patchVer: source.patchVer || 0,
         requestHeaders: source.headers ? this.stringsOnlyObject(source.headers) : {},
         chapterID,
+        accountId,
         token,
       },
       onVideoLoadStart: this._onLoadStart,
