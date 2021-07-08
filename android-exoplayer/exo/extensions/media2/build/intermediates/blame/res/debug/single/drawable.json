@@ -1,0 +1,18 @@
+[
+    {
+        "merged": "C:\\Users\\anas\\Desktop\\swann\\swann-mobile-app\\node_modules\\react-native-video\\android-exoplayer\\exo\\extensions\\media2\\build\\intermediates\\res\\merged\\debug\\drawable\\notification_tile_bg.xml",
+        "source": "C:\\Users\\anas\\.gradle\\caches\\transforms-2\\files-2.1\\397e67e26ef52c3d65c890cee6aea3eb\\core-1.1.0\\res\\drawable\\notification_tile_bg.xml"
+    },
+    {
+        "merged": "C:\\Users\\anas\\Desktop\\swann\\swann-mobile-app\\node_modules\\react-native-video\\android-exoplayer\\exo\\extensions\\media2\\build\\intermediates\\res\\merged\\debug\\drawable\\notification_icon_background.xml",
+        "source": "C:\\Users\\anas\\.gradle\\caches\\transforms-2\\files-2.1\\397e67e26ef52c3d65c890cee6aea3eb\\core-1.1.0\\res\\drawable\\notification_icon_background.xml"
+    },
+    {
+        "merged": "C:\\Users\\anas\\Desktop\\swann\\swann-mobile-app\\node_modules\\react-native-video\\android-exoplayer\\exo\\extensions\\media2\\build\\intermediates\\res\\merged\\debug\\drawable\\notification_bg.xml",
+        "source": "C:\\Users\\anas\\.gradle\\caches\\transforms-2\\files-2.1\\397e67e26ef52c3d65c890cee6aea3eb\\core-1.1.0\\res\\drawable\\notification_bg.xml"
+    },
+    {
+        "merged": "C:\\Users\\anas\\Desktop\\swann\\swann-mobile-app\\node_modules\\react-native-video\\android-exoplayer\\exo\\extensions\\media2\\build\\intermediates\\res\\merged\\debug\\drawable\\notification_bg_low.xml",
+        "source": "C:\\Users\\anas\\.gradle\\caches\\transforms-2\\files-2.1\\397e67e26ef52c3d65c890cee6aea3eb\\core-1.1.0\\res\\drawable\\notification_bg_low.xml"
+    }
+]

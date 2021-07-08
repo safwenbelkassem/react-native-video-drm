@@ -1,0 +1,34 @@
+{
+    "logs": [
+        {
+            "outputFile": "C:\\Users\\anas\\Desktop\\swann\\swann-mobile-app\\node_modules\\react-native-video\\android-exoplayer\\exo\\extensions\\jobdispatcher\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-hy\\values-hy.xml",
+            "map": [
+                {
+                    "source": "C:\\Users\\anas\\.gradle\\caches\\transforms-2\\files-2.1\\976f7ce2c8a611ac2cc2c8aaa1abf9a8\\core-1.0.0\\res\\values-hy\\values-hy.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "C:\\Users\\anas\\Desktop\\swann\\swann-mobile-app\\node_modules\\react-native-video\\android-exoplayer\\exo\\extensions\\jobdispatcher\\build\\intermediates\\res\\merged\\debug\\values-hy\\values-hy.xml",
+            "map": [
+                {
+                    "source": "C:\\Users\\anas\\.gradle\\caches\\transforms-2\\files-2.1\\976f7ce2c8a611ac2cc2c8aaa1abf9a8\\core-1.0.0\\res\\values-hy\\values-hy.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    }
+                }
+            ]
+        }
+    ]
+}

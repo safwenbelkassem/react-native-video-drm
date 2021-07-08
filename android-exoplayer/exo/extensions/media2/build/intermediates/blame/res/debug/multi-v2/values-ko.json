@@ -1,0 +1,68 @@
+{
+    "logs": [
+        {
+            "outputFile": "C:\\Users\\anas\\Desktop\\swann\\swann-mobile-app\\node_modules\\react-native-video\\android-exoplayer\\exo\\extensions\\media2\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-ko\\values-ko.xml",
+            "map": [
+                {
+                    "source": "C:\\Users\\anas\\.gradle\\caches\\transforms-2\\files-2.1\\397e67e26ef52c3d65c890cee6aea3eb\\core-1.1.0\\res\\values-ko\\values-ko.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    },
+                    "to": {
+                        "startLines": "7",
+                        "startColumns": "4",
+                        "startOffsets": "579",
+                        "endColumns": "100",
+                        "endOffsets": "675"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\anas\\.gradle\\caches\\transforms-2\\files-2.1\\4f9684ffb4d32013587fca813ed23bc1\\media2-session-1.0.3\\res\\values-ko\\values-ko.xml",
+                    "from": {
+                        "startLines": "2,3,4,5,6",
+                        "startColumns": "4,4,4,4,4",
+                        "startOffsets": "55,155,251,344,460",
+                        "endColumns": "99,95,92,115,118",
+                        "endOffsets": "150,246,339,455,574"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "C:\\Users\\anas\\Desktop\\swann\\swann-mobile-app\\node_modules\\react-native-video\\android-exoplayer\\exo\\extensions\\media2\\build\\intermediates\\res\\merged\\debug\\values-ko\\values-ko.xml",
+            "map": [
+                {
+                    "source": "C:\\Users\\anas\\.gradle\\caches\\transforms-2\\files-2.1\\397e67e26ef52c3d65c890cee6aea3eb\\core-1.1.0\\res\\values-ko\\values-ko.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    },
+                    "to": {
+                        "startLines": "7",
+                        "startColumns": "4",
+                        "startOffsets": "579",
+                        "endColumns": "100",
+                        "endOffsets": "675"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\anas\\.gradle\\caches\\transforms-2\\files-2.1\\4f9684ffb4d32013587fca813ed23bc1\\media2-session-1.0.3\\res\\values-ko\\values-ko.xml",
+                    "from": {
+                        "startLines": "2,3,4,5,6",
+                        "startColumns": "4,4,4,4,4",
+                        "startOffsets": "55,155,251,344,460",
+                        "endColumns": "99,95,92,115,118",
+                        "endOffsets": "150,246,339,455,574"
+                    }
+                }
+            ]
+        }
+    ]
+}

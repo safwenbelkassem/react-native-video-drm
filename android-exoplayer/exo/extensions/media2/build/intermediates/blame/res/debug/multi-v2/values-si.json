@@ -1,0 +1,68 @@
+{
+    "logs": [
+        {
+            "outputFile": "C:\\Users\\anas\\Desktop\\swann\\swann-mobile-app\\node_modules\\react-native-video\\android-exoplayer\\exo\\extensions\\media2\\build\\intermediates\\res\\merged\\debug\\values-si\\values-si.xml",
+            "map": [
+                {
+                    "source": "C:\\Users\\anas\\.gradle\\caches\\transforms-2\\files-2.1\\397e67e26ef52c3d65c890cee6aea3eb\\core-1.1.0\\res\\values-si\\values-si.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    },
+                    "to": {
+                        "startLines": "7",
+                        "startColumns": "4",
+                        "startOffsets": "604",
+                        "endColumns": "100",
+                        "endOffsets": "700"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\anas\\.gradle\\caches\\transforms-2\\files-2.1\\4f9684ffb4d32013587fca813ed23bc1\\media2-session-1.0.3\\res\\values-si\\values-si.xml",
+                    "from": {
+                        "startLines": "2,3,4,5,6",
+                        "startColumns": "4,4,4,4,4",
+                        "startOffsets": "55,161,259,355,478",
+                        "endColumns": "105,97,95,122,125",
+                        "endOffsets": "156,254,350,473,599"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "C:\\Users\\anas\\Desktop\\swann\\swann-mobile-app\\node_modules\\react-native-video\\android-exoplayer\\exo\\extensions\\media2\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-si\\values-si.xml",
+            "map": [
+                {
+                    "source": "C:\\Users\\anas\\.gradle\\caches\\transforms-2\\files-2.1\\397e67e26ef52c3d65c890cee6aea3eb\\core-1.1.0\\res\\values-si\\values-si.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    },
+                    "to": {
+                        "startLines": "7",
+                        "startColumns": "4",
+                        "startOffsets": "604",
+                        "endColumns": "100",
+                        "endOffsets": "700"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\anas\\.gradle\\caches\\transforms-2\\files-2.1\\4f9684ffb4d32013587fca813ed23bc1\\media2-session-1.0.3\\res\\values-si\\values-si.xml",
+                    "from": {
+                        "startLines": "2,3,4,5,6",
+                        "startColumns": "4,4,4,4,4",
+                        "startOffsets": "55,161,259,355,478",
+                        "endColumns": "105,97,95,122,125",
+                        "endOffsets": "156,254,350,473,599"
+                    }
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,29 @@
+com/google/android/exoplayer2/ext/mediasession/RepeatModeActionProvider.java
+ com.google.android.exoplayer2.ext.mediasession.RepeatModeActionProvider
+com/google/android/exoplayer2/ext/mediasession/BuildConfig.java
+ com.google.android.exoplayer2.ext.mediasession.BuildConfig
+com/google/android/exoplayer2/ext/mediasession/MediaSessionConnector.java
+ com.google.android.exoplayer2.ext.mediasession.MediaSessionConnector
+ com.google.android.exoplayer2.ext.mediasession.MediaSessionConnector$1
+ com.google.android.exoplayer2.ext.mediasession.MediaSessionConnector$CaptionCallback
+ com.google.android.exoplayer2.ext.mediasession.MediaSessionConnector$CommandReceiver
+ com.google.android.exoplayer2.ext.mediasession.MediaSessionConnector$ComponentListener
+ com.google.android.exoplayer2.ext.mediasession.MediaSessionConnector$CustomActionProvider
+ com.google.android.exoplayer2.ext.mediasession.MediaSessionConnector$DefaultMediaMetadataProvider
+ com.google.android.exoplayer2.ext.mediasession.MediaSessionConnector$MediaButtonEventHandler
+ com.google.android.exoplayer2.ext.mediasession.MediaSessionConnector$MediaMetadataProvider
+ com.google.android.exoplayer2.ext.mediasession.MediaSessionConnector$PlaybackActions
+ com.google.android.exoplayer2.ext.mediasession.MediaSessionConnector$PlaybackPreparer
+ com.google.android.exoplayer2.ext.mediasession.MediaSessionConnector$QueueEditor
+ com.google.android.exoplayer2.ext.mediasession.MediaSessionConnector$QueueNavigator
+ com.google.android.exoplayer2.ext.mediasession.MediaSessionConnector$RatingCallback
+com/google/android/exoplayer2/ext/mediasession/TimelineQueueNavigator.java
+ com.google.android.exoplayer2.ext.mediasession.TimelineQueueNavigator
+com/google/android/exoplayer2/ext/mediasession/TimelineQueueEditor.java
+ com.google.android.exoplayer2.ext.mediasession.TimelineQueueEditor
+ com.google.android.exoplayer2.ext.mediasession.TimelineQueueEditor$MediaDescriptionEqualityChecker
+ com.google.android.exoplayer2.ext.mediasession.TimelineQueueEditor$MediaIdEqualityChecker
+ com.google.android.exoplayer2.ext.mediasession.TimelineQueueEditor$MediaSourceFactory
+ com.google.android.exoplayer2.ext.mediasession.TimelineQueueEditor$QueueDataAdapter
+com/google/android/exoplayer2/ext/mediasession/package-info.java
+ com.google.android.exoplayer2.ext.mediasession.package-info

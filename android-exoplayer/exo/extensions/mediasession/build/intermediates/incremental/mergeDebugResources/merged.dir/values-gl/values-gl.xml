@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="exo_media_action_repeat_all_description">Repetir todas as pistas</string>
+    <string name="exo_media_action_repeat_off_description">Non repetir</string>
+    <string name="exo_media_action_repeat_one_description">Repetir unha pista</string>
+    <string msgid="7988687684186075107" name="status_bar_notification_info_overflow">">999"</string>
+</resources>

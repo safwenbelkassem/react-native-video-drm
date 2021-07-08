@@ -1,0 +1,22 @@
+[
+    {
+        "merged": "C:\\Users\\anas\\Desktop\\swann\\swann-mobile-app\\node_modules\\react-native-video\\android-exoplayer\\exo\\extensions\\media2\\build\\intermediates\\res\\merged\\debug\\drawable-ldpi-v4\\media_session_service_notification_ic_play.png",
+        "source": "C:\\Users\\anas\\.gradle\\caches\\transforms-2\\files-2.1\\4f9684ffb4d32013587fca813ed23bc1\\media2-session-1.0.3\\res\\drawable-ldpi-v4\\media_session_service_notification_ic_play.png"
+    },
+    {
+        "merged": "C:\\Users\\anas\\Desktop\\swann\\swann-mobile-app\\node_modules\\react-native-video\\android-exoplayer\\exo\\extensions\\media2\\build\\intermediates\\res\\merged\\debug\\drawable-ldpi-v4\\media_session_service_notification_ic_music_note.png",
+        "source": "C:\\Users\\anas\\.gradle\\caches\\transforms-2\\files-2.1\\4f9684ffb4d32013587fca813ed23bc1\\media2-session-1.0.3\\res\\drawable-ldpi-v4\\media_session_service_notification_ic_music_note.png"
+    },
+    {
+        "merged": "C:\\Users\\anas\\Desktop\\swann\\swann-mobile-app\\node_modules\\react-native-video\\android-exoplayer\\exo\\extensions\\media2\\build\\intermediates\\res\\merged\\debug\\drawable-ldpi-v4\\media_session_service_notification_ic_skip_to_previous.png",
+        "source": "C:\\Users\\anas\\.gradle\\caches\\transforms-2\\files-2.1\\4f9684ffb4d32013587fca813ed23bc1\\media2-session-1.0.3\\res\\drawable-ldpi-v4\\media_session_service_notification_ic_skip_to_previous.png"
+    },
+    {
+        "merged": "C:\\Users\\anas\\Desktop\\swann\\swann-mobile-app\\node_modules\\react-native-video\\android-exoplayer\\exo\\extensions\\media2\\build\\intermediates\\res\\merged\\debug\\drawable-ldpi-v4\\media_session_service_notification_ic_skip_to_next.png",
+        "source": "C:\\Users\\anas\\.gradle\\caches\\transforms-2\\files-2.1\\4f9684ffb4d32013587fca813ed23bc1\\media2-session-1.0.3\\res\\drawable-ldpi-v4\\media_session_service_notification_ic_skip_to_next.png"
+    },
+    {
+        "merged": "C:\\Users\\anas\\Desktop\\swann\\swann-mobile-app\\node_modules\\react-native-video\\android-exoplayer\\exo\\extensions\\media2\\build\\intermediates\\res\\merged\\debug\\drawable-ldpi-v4\\media_session_service_notification_ic_pause.png",
+        "source": "C:\\Users\\anas\\.gradle\\caches\\transforms-2\\files-2.1\\4f9684ffb4d32013587fca813ed23bc1\\media2-session-1.0.3\\res\\drawable-ldpi-v4\\media_session_service_notification_ic_pause.png"
+    }
+]

@@ -1,0 +1,10 @@
+[
+    {
+        "merged": "C:\\Users\\anas\\Desktop\\swann\\swann-mobile-app\\node_modules\\react-native-video\\android-exoplayer\\exo\\extensions\\cast\\build\\intermediates\\res\\merged\\debug\\interpolator\\mr_linear_out_slow_in.xml",
+        "source": "C:\\Users\\anas\\.gradle\\caches\\transforms-2\\files-2.1\\95c2b2bcf0358df36dca3ba7548970ed\\mediarouter-1.0.0\\res\\interpolator\\mr_linear_out_slow_in.xml"
+    },
+    {
+        "merged": "C:\\Users\\anas\\Desktop\\swann\\swann-mobile-app\\node_modules\\react-native-video\\android-exoplayer\\exo\\extensions\\cast\\build\\intermediates\\res\\merged\\debug\\interpolator\\mr_fast_out_slow_in.xml",
+        "source": "C:\\Users\\anas\\.gradle\\caches\\transforms-2\\files-2.1\\95c2b2bcf0358df36dca3ba7548970ed\\mediarouter-1.0.0\\res\\interpolator\\mr_fast_out_slow_in.xml"
+    }
+]

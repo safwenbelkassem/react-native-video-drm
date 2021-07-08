@@ -1,0 +1,18 @@
+[
+    {
+        "merged": "C:\\Users\\anas\\Desktop\\swann\\swann-mobile-app\\node_modules\\react-native-video\\android-exoplayer\\exo\\extensions\\mediasession\\build\\intermediates\\res\\merged\\debug\\layout-v21\\notification_action.xml",
+        "source": "C:\\Users\\anas\\.gradle\\caches\\transforms-2\\files-2.1\\ccbfcb44b3c40a86a55b1eb8153810ef\\core-1.0.1\\res\\layout-v21\\notification_action.xml"
+    },
+    {
+        "merged": "C:\\Users\\anas\\Desktop\\swann\\swann-mobile-app\\node_modules\\react-native-video\\android-exoplayer\\exo\\extensions\\mediasession\\build\\intermediates\\res\\merged\\debug\\layout-v21\\notification_template_custom_big.xml",
+        "source": "C:\\Users\\anas\\.gradle\\caches\\transforms-2\\files-2.1\\ccbfcb44b3c40a86a55b1eb8153810ef\\core-1.0.1\\res\\layout-v21\\notification_template_custom_big.xml"
+    },
+    {
+        "merged": "C:\\Users\\anas\\Desktop\\swann\\swann-mobile-app\\node_modules\\react-native-video\\android-exoplayer\\exo\\extensions\\mediasession\\build\\intermediates\\res\\merged\\debug\\layout-v21\\notification_template_icon_group.xml",
+        "source": "C:\\Users\\anas\\.gradle\\caches\\transforms-2\\files-2.1\\ccbfcb44b3c40a86a55b1eb8153810ef\\core-1.0.1\\res\\layout-v21\\notification_template_icon_group.xml"
+    },
+    {
+        "merged": "C:\\Users\\anas\\Desktop\\swann\\swann-mobile-app\\node_modules\\react-native-video\\android-exoplayer\\exo\\extensions\\mediasession\\build\\intermediates\\res\\merged\\debug\\layout-v21\\notification_action_tombstone.xml",
+        "source": "C:\\Users\\anas\\.gradle\\caches\\transforms-2\\files-2.1\\ccbfcb44b3c40a86a55b1eb8153810ef\\core-1.0.1\\res\\layout-v21\\notification_action_tombstone.xml"
+    }
+]

@@ -1,0 +1,7 @@
+com/google/android/exoplayer2/ext/workmanager/WorkManagerScheduler.java
+ com.google.android.exoplayer2.ext.workmanager.WorkManagerScheduler
+ com.google.android.exoplayer2.ext.workmanager.WorkManagerScheduler$SchedulerWorker
+com/google/android/exoplayer2/ext/workmanager/package-info.java
+ com.google.android.exoplayer2.ext.workmanager.package-info
+com/google/android/exoplayer2/ext/workmanager/BuildConfig.java
+ com.google.android.exoplayer2.ext.workmanager.BuildConfig

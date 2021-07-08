@@ -1,0 +1,66 @@
+apply plugin: 'com.android.library'
+
+def safeExtGet(prop, fallback) {
+    rootProject.ext.has(prop) ? rootProject.ext.get(prop) : fallback
+
+
+}
+
+android {
+    compileSdkVersion safeExtGet('compileSdkVersion', 28)
+    buildToolsVersion safeExtGet('buildToolsVersion', '28.0.3')
+
+    compileOptions {
+        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_1_8
+    }
+
+    defaultConfig {
+        minSdkVersion safeExtGet('minSdkVersion', 17)
+        targetSdkVersion safeExtGet('targetSdkVersion', 28)
+        versionCode 1
+        multiDexEnabled true
+        versionName "1.0"
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+dependencies {
+    implementation "com.facebook.react:react-native:${safeExtGet('reactNativeVersion', '+')}"
+
+
+    // All support libs must use the same version
+    implementation "androidx.annotation:annotation:1.1.0"
+    implementation "androidx.core:core:1.1.0"
+    implementation "androidx.media:media:1.1.0"
+    implementation 'com.squareup.okhttp3:okhttp:3.14.3'
+    implementation 'androidx.appcompat:appcompat:1.2.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.2'
+    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.2.0-alpha01'
+    testImplementation 'junit:junit:4.12'
+    implementation 'com.android.support:support-v13:28.0.0'
+    implementation 'com.amitshekhar.android:android-networking:1.0.2'
+    implementation 'com.google.android.material:material:1.2.1'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
+
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+    implementation ('com.google.guava:guava:29.0-jre') {
+        exclude group: 'com.google.code.findbugs', module: 'jsr305'
+        exclude group: 'org.checkerframework', module: 'checker-compat-qual'
+        exclude group: 'com.google.errorprone', module: 'error_prone_annotations'
+        exclude group: 'com.google.j2objc', module: 'j2objc-annotations'
+        exclude group: 'org.codehaus.mojo', module: 'animal-sniffer-annotations'
+    }
+    implementation 'androidx.multidex:multidex:2.0.1'
+    implementation project(':exoplayer-library-core')
+    implementation project(':exoplayer-library-hls')
+    implementation project(':exoplayer-library-smoothstreaming')
+    implementation project(':exoplayer-library-dash')
+    implementation project(':exoplayer-extension-cronet')
+    implementation project(':exoplayer-library-ui')
+    implementation project(':exoplayer-extension-okhttp')
+}

@@ -1,0 +1,34 @@
+[
+    {
+        "merged": "C:\\Users\\anas\\Desktop\\swann\\swann-mobile-app\\node_modules\\react-native-video\\android-exoplayer\\exo\\extensions\\mediasession\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\notify_panel_notification_icon_bg.png",
+        "source": "C:\\Users\\anas\\.gradle\\caches\\transforms-2\\files-2.1\\ccbfcb44b3c40a86a55b1eb8153810ef\\core-1.0.1\\res\\drawable-hdpi-v4\\notify_panel_notification_icon_bg.png"
+    },
+    {
+        "merged": "C:\\Users\\anas\\Desktop\\swann\\swann-mobile-app\\node_modules\\react-native-video\\android-exoplayer\\exo\\extensions\\mediasession\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\notification_bg_low_pressed.9.png",
+        "source": "C:\\Users\\anas\\.gradle\\caches\\transforms-2\\files-2.1\\ccbfcb44b3c40a86a55b1eb8153810ef\\core-1.0.1\\res\\drawable-hdpi-v4\\notification_bg_low_pressed.9.png"
+    },
+    {
+        "merged": "C:\\Users\\anas\\Desktop\\swann\\swann-mobile-app\\node_modules\\react-native-video\\android-exoplayer\\exo\\extensions\\mediasession\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\exo_media_action_repeat_off.png",
+        "source": "C:\\Users\\anas\\Desktop\\swann\\swann-mobile-app\\node_modules\\react-native-video\\android-exoplayer\\exo\\extensions\\mediasession\\src\\main\\res\\drawable-hdpi\\exo_media_action_repeat_off.png"
+    },
+    {
+        "merged": "C:\\Users\\anas\\Desktop\\swann\\swann-mobile-app\\node_modules\\react-native-video\\android-exoplayer\\exo\\extensions\\mediasession\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\exo_media_action_repeat_all.png",
+        "source": "C:\\Users\\anas\\Desktop\\swann\\swann-mobile-app\\node_modules\\react-native-video\\android-exoplayer\\exo\\extensions\\mediasession\\src\\main\\res\\drawable-hdpi\\exo_media_action_repeat_all.png"
+    },
+    {
+        "merged": "C:\\Users\\anas\\Desktop\\swann\\swann-mobile-app\\node_modules\\react-native-video\\android-exoplayer\\exo\\extensions\\mediasession\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\exo_media_action_repeat_one.png",
+        "source": "C:\\Users\\anas\\Desktop\\swann\\swann-mobile-app\\node_modules\\react-native-video\\android-exoplayer\\exo\\extensions\\mediasession\\src\\main\\res\\drawable-hdpi\\exo_media_action_repeat_one.png"
+    },
+    {
+        "merged": "C:\\Users\\anas\\Desktop\\swann\\swann-mobile-app\\node_modules\\react-native-video\\android-exoplayer\\exo\\extensions\\mediasession\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\notification_bg_low_normal.9.png",
+        "source": "C:\\Users\\anas\\.gradle\\caches\\transforms-2\\files-2.1\\ccbfcb44b3c40a86a55b1eb8153810ef\\core-1.0.1\\res\\drawable-hdpi-v4\\notification_bg_low_normal.9.png"
+    },
+    {
+        "merged": "C:\\Users\\anas\\Desktop\\swann\\swann-mobile-app\\node_modules\\react-native-video\\android-exoplayer\\exo\\extensions\\mediasession\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\notification_bg_normal.9.png",
+        "source": "C:\\Users\\anas\\.gradle\\caches\\transforms-2\\files-2.1\\ccbfcb44b3c40a86a55b1eb8153810ef\\core-1.0.1\\res\\drawable-hdpi-v4\\notification_bg_normal.9.png"
+    },
+    {
+        "merged": "C:\\Users\\anas\\Desktop\\swann\\swann-mobile-app\\node_modules\\react-native-video\\android-exoplayer\\exo\\extensions\\mediasession\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\notification_bg_normal_pressed.9.png",
+        "source": "C:\\Users\\anas\\.gradle\\caches\\transforms-2\\files-2.1\\ccbfcb44b3c40a86a55b1eb8153810ef\\core-1.0.1\\res\\drawable-hdpi-v4\\notification_bg_normal_pressed.9.png"
+    }
+]

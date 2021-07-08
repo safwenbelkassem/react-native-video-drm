@@ -1,0 +1,8 @@
+com/google/android/exoplayer2/ext/okhttp/OkHttpDataSource.java
+ com.google.android.exoplayer2.ext.okhttp.OkHttpDataSource
+com/google/android/exoplayer2/ext/okhttp/package-info.java
+ com.google.android.exoplayer2.ext.okhttp.package-info
+com/google/android/exoplayer2/ext/okhttp/OkHttpDataSourceFactory.java
+ com.google.android.exoplayer2.ext.okhttp.OkHttpDataSourceFactory
+com/google/android/exoplayer2/ext/okhttp/BuildConfig.java
+ com.google.android.exoplayer2.ext.okhttp.BuildConfig

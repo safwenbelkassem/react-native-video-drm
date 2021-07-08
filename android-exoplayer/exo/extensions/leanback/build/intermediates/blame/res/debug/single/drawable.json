@@ -1,0 +1,58 @@
+[
+    {
+        "merged": "C:\\Users\\anas\\Desktop\\swann\\swann-mobile-app\\node_modules\\react-native-video\\android-exoplayer\\exo\\extensions\\leanback\\build\\intermediates\\res\\merged\\debug\\drawable\\lb_speech_orb.xml",
+        "source": "C:\\Users\\anas\\.gradle\\caches\\transforms-2\\files-2.1\\b709d7c34fb0fd8adcf55a769634ffde\\leanback-1.0.0\\res\\drawable\\lb_speech_orb.xml"
+    },
+    {
+        "merged": "C:\\Users\\anas\\Desktop\\swann\\swann-mobile-app\\node_modules\\react-native-video\\android-exoplayer\\exo\\extensions\\leanback\\build\\intermediates\\res\\merged\\debug\\drawable\\notification_icon_background.xml",
+        "source": "C:\\Users\\anas\\.gradle\\caches\\transforms-2\\files-2.1\\976f7ce2c8a611ac2cc2c8aaa1abf9a8\\core-1.0.0\\res\\drawable\\notification_icon_background.xml"
+    },
+    {
+        "merged": "C:\\Users\\anas\\Desktop\\swann\\swann-mobile-app\\node_modules\\react-native-video\\android-exoplayer\\exo\\extensions\\leanback\\build\\intermediates\\res\\merged\\debug\\drawable\\lb_search_orb.xml",
+        "source": "C:\\Users\\anas\\.gradle\\caches\\transforms-2\\files-2.1\\b709d7c34fb0fd8adcf55a769634ffde\\leanback-1.0.0\\res\\drawable\\lb_search_orb.xml"
+    },
+    {
+        "merged": "C:\\Users\\anas\\Desktop\\swann\\swann-mobile-app\\node_modules\\react-native-video\\android-exoplayer\\exo\\extensions\\leanback\\build\\intermediates\\res\\merged\\debug\\drawable\\lb_card_foreground.xml",
+        "source": "C:\\Users\\anas\\.gradle\\caches\\transforms-2\\files-2.1\\b709d7c34fb0fd8adcf55a769634ffde\\leanback-1.0.0\\res\\drawable\\lb_card_foreground.xml"
+    },
+    {
+        "merged": "C:\\Users\\anas\\Desktop\\swann\\swann-mobile-app\\node_modules\\react-native-video\\android-exoplayer\\exo\\extensions\\leanback\\build\\intermediates\\res\\merged\\debug\\drawable\\lb_playback_progress_bar.xml",
+        "source": "C:\\Users\\anas\\.gradle\\caches\\transforms-2\\files-2.1\\b709d7c34fb0fd8adcf55a769634ffde\\leanback-1.0.0\\res\\drawable\\lb_playback_progress_bar.xml"
+    },
+    {
+        "merged": "C:\\Users\\anas\\Desktop\\swann\\swann-mobile-app\\node_modules\\react-native-video\\android-exoplayer\\exo\\extensions\\leanback\\build\\intermediates\\res\\merged\\debug\\drawable\\lb_background.xml",
+        "source": "C:\\Users\\anas\\.gradle\\caches\\transforms-2\\files-2.1\\b709d7c34fb0fd8adcf55a769634ffde\\leanback-1.0.0\\res\\drawable\\lb_background.xml"
+    },
+    {
+        "merged": "C:\\Users\\anas\\Desktop\\swann\\swann-mobile-app\\node_modules\\react-native-video\\android-exoplayer\\exo\\extensions\\leanback\\build\\intermediates\\res\\merged\\debug\\drawable\\lb_headers_right_fading.xml",
+        "source": "C:\\Users\\anas\\.gradle\\caches\\transforms-2\\files-2.1\\b709d7c34fb0fd8adcf55a769634ffde\\leanback-1.0.0\\res\\drawable\\lb_headers_right_fading.xml"
+    },
+    {
+        "merged": "C:\\Users\\anas\\Desktop\\swann\\swann-mobile-app\\node_modules\\react-native-video\\android-exoplayer\\exo\\extensions\\leanback\\build\\intermediates\\res\\merged\\debug\\drawable\\lb_onboarding_start_button_background.xml",
+        "source": "C:\\Users\\anas\\.gradle\\caches\\transforms-2\\files-2.1\\b709d7c34fb0fd8adcf55a769634ffde\\leanback-1.0.0\\res\\drawable\\lb_onboarding_start_button_background.xml"
+    },
+    {
+        "merged": "C:\\Users\\anas\\Desktop\\swann\\swann-mobile-app\\node_modules\\react-native-video\\android-exoplayer\\exo\\extensions\\leanback\\build\\intermediates\\res\\merged\\debug\\drawable\\notification_bg_low.xml",
+        "source": "C:\\Users\\anas\\.gradle\\caches\\transforms-2\\files-2.1\\976f7ce2c8a611ac2cc2c8aaa1abf9a8\\core-1.0.0\\res\\drawable\\notification_bg_low.xml"
+    },
+    {
+        "merged": "C:\\Users\\anas\\Desktop\\swann\\swann-mobile-app\\node_modules\\react-native-video\\android-exoplayer\\exo\\extensions\\leanback\\build\\intermediates\\res\\merged\\debug\\drawable\\lb_control_button_secondary.xml",
+        "source": "C:\\Users\\anas\\.gradle\\caches\\transforms-2\\files-2.1\\b709d7c34fb0fd8adcf55a769634ffde\\leanback-1.0.0\\res\\drawable\\lb_control_button_secondary.xml"
+    },
+    {
+        "merged": "C:\\Users\\anas\\Desktop\\swann\\swann-mobile-app\\node_modules\\react-native-video\\android-exoplayer\\exo\\extensions\\leanback\\build\\intermediates\\res\\merged\\debug\\drawable\\lb_control_button_primary.xml",
+        "source": "C:\\Users\\anas\\.gradle\\caches\\transforms-2\\files-2.1\\b709d7c34fb0fd8adcf55a769634ffde\\leanback-1.0.0\\res\\drawable\\lb_control_button_primary.xml"
+    },
+    {
+        "merged": "C:\\Users\\anas\\Desktop\\swann\\swann-mobile-app\\node_modules\\react-native-video\\android-exoplayer\\exo\\extensions\\leanback\\build\\intermediates\\res\\merged\\debug\\drawable\\lb_playback_now_playing_bar.xml",
+        "source": "C:\\Users\\anas\\.gradle\\caches\\transforms-2\\files-2.1\\b709d7c34fb0fd8adcf55a769634ffde\\leanback-1.0.0\\res\\drawable\\lb_playback_now_playing_bar.xml"
+    },
+    {
+        "merged": "C:\\Users\\anas\\Desktop\\swann\\swann-mobile-app\\node_modules\\react-native-video\\android-exoplayer\\exo\\extensions\\leanback\\build\\intermediates\\res\\merged\\debug\\drawable\\notification_bg.xml",
+        "source": "C:\\Users\\anas\\.gradle\\caches\\transforms-2\\files-2.1\\976f7ce2c8a611ac2cc2c8aaa1abf9a8\\core-1.0.0\\res\\drawable\\notification_bg.xml"
+    },
+    {
+        "merged": "C:\\Users\\anas\\Desktop\\swann\\swann-mobile-app\\node_modules\\react-native-video\\android-exoplayer\\exo\\extensions\\leanback\\build\\intermediates\\res\\merged\\debug\\drawable\\notification_tile_bg.xml",
+        "source": "C:\\Users\\anas\\.gradle\\caches\\transforms-2\\files-2.1\\976f7ce2c8a611ac2cc2c8aaa1abf9a8\\core-1.0.0\\res\\drawable\\notification_tile_bg.xml"
+    }
+]

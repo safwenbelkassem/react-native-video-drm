@@ -1,0 +1,7 @@
+com/google/android/exoplayer2/ext/jobdispatcher/JobDispatcherScheduler.java
+ com.google.android.exoplayer2.ext.jobdispatcher.JobDispatcherScheduler
+ com.google.android.exoplayer2.ext.jobdispatcher.JobDispatcherScheduler$JobDispatcherSchedulerService
+com/google/android/exoplayer2/ext/jobdispatcher/package-info.java
+ com.google.android.exoplayer2.ext.jobdispatcher.package-info
+com/google/android/exoplayer2/ext/jobdispatcher/BuildConfig.java
+ com.google.android.exoplayer2.ext.jobdispatcher.BuildConfig

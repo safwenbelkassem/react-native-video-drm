@@ -1,0 +1,14 @@
+[
+    {
+        "merged": "C:\\Users\\anas\\Desktop\\swann\\swann-mobile-app\\node_modules\\react-native-video\\android-exoplayer\\exo\\extensions\\mediasession\\build\\intermediates\\res\\merged\\debug\\drawable-ldpi-v4\\exo_media_action_repeat_off.png",
+        "source": "C:\\Users\\anas\\Desktop\\swann\\swann-mobile-app\\node_modules\\react-native-video\\android-exoplayer\\exo\\extensions\\mediasession\\src\\main\\res\\drawable-ldpi\\exo_media_action_repeat_off.png"
+    },
+    {
+        "merged": "C:\\Users\\anas\\Desktop\\swann\\swann-mobile-app\\node_modules\\react-native-video\\android-exoplayer\\exo\\extensions\\mediasession\\build\\intermediates\\res\\merged\\debug\\drawable-ldpi-v4\\exo_media_action_repeat_all.png",
+        "source": "C:\\Users\\anas\\Desktop\\swann\\swann-mobile-app\\node_modules\\react-native-video\\android-exoplayer\\exo\\extensions\\mediasession\\src\\main\\res\\drawable-ldpi\\exo_media_action_repeat_all.png"
+    },
+    {
+        "merged": "C:\\Users\\anas\\Desktop\\swann\\swann-mobile-app\\node_modules\\react-native-video\\android-exoplayer\\exo\\extensions\\mediasession\\build\\intermediates\\res\\merged\\debug\\drawable-ldpi-v4\\exo_media_action_repeat_one.png",
+        "source": "C:\\Users\\anas\\Desktop\\swann\\swann-mobile-app\\node_modules\\react-native-video\\android-exoplayer\\exo\\extensions\\mediasession\\src\\main\\res\\drawable-ldpi\\exo_media_action_repeat_one.png"
+    }
+]

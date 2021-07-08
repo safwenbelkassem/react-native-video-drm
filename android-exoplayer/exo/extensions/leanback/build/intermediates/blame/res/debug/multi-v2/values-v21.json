@@ -1,0 +1,128 @@
+{
+    "logs": [
+        {
+            "outputFile": "C:\\Users\\anas\\Desktop\\swann\\swann-mobile-app\\node_modules\\react-native-video\\android-exoplayer\\exo\\extensions\\leanback\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-v21\\values-v21.xml",
+            "map": [
+                {
+                    "source": "C:\\Users\\anas\\.gradle\\caches\\transforms-2\\files-2.1\\976f7ce2c8a611ac2cc2c8aaa1abf9a8\\core-1.0.0\\res\\values-v21\\values-v21.xml",
+                    "from": {
+                        "startLines": "2,3,4,5,6,7,8,9,10,13",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "55,159,223,290,354,470,596,722,850,1022",
+                        "endLines": "2,3,4,5,6,7,8,9,12,17",
+                        "endColumns": "103,63,66,63,115,125,125,127,12,12",
+                        "endOffsets": "154,218,285,349,465,591,717,845,1017,1355"
+                    },
+                    "to": {
+                        "startLines": "2,3,4,5,6,7,14,18,72,75",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "55,159,223,290,354,470,927,1221,5252,5424",
+                        "endLines": "2,3,4,5,6,7,14,18,74,79",
+                        "endColumns": "103,63,66,63,115,125,125,127,12,12",
+                        "endOffsets": "154,218,285,349,465,591,1048,1344,5419,5757"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\anas\\.gradle\\caches\\transforms-2\\files-2.1\\b709d7c34fb0fd8adcf55a769634ffde\\leanback-1.0.0\\res\\values-v21\\values-v21.xml",
+                    "from": {
+                        "startLines": "2,3,7,13,17,20,25,29,52,55,59",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "55,144,418,933,1169,1377,1801,2095,3791,3989,4180",
+                        "endLines": "2,6,12,16,19,24,28,51,54,58,59",
+                        "endColumns": "88,12,12,12,12,12,12,12,12,12,72",
+                        "endOffsets": "139,413,928,1164,1372,1796,2090,3786,3984,4175,4248"
+                    },
+                    "to": {
+                        "startLines": "22,23,27,33,37,40,45,49,80,83,87",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "1516,1605,1879,2394,2630,2838,3262,3556,5762,5960,6151",
+                        "endLines": "22,26,32,36,39,44,48,71,82,86,87",
+                        "endColumns": "88,12,12,12,12,12,12,12,12,12,72",
+                        "endOffsets": "1600,1874,2389,2625,2833,3257,3551,5247,5955,6146,6219"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\anas\\.gradle\\caches\\transforms-2\\files-2.1\\4d53b1b3972c4d823cf51f7646ba79cd\\media-1.0.0\\res\\values-v21\\values-v21.xml",
+                    "from": {
+                        "startLines": "2,5,8,11",
+                        "startColumns": "4,4,4,4",
+                        "startOffsets": "55,223,386,554",
+                        "endLines": "4,7,10,13",
+                        "endColumns": "12,12,12,12",
+                        "endOffsets": "218,381,549,716"
+                    },
+                    "to": {
+                        "startLines": "8,11,15,19",
+                        "startColumns": "4,4,4,4",
+                        "startOffsets": "596,764,1053,1349",
+                        "endLines": "10,13,17,21",
+                        "endColumns": "12,12,12,12",
+                        "endOffsets": "759,922,1216,1511"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "C:\\Users\\anas\\Desktop\\swann\\swann-mobile-app\\node_modules\\react-native-video\\android-exoplayer\\exo\\extensions\\leanback\\build\\intermediates\\res\\merged\\debug\\values-v21\\values-v21.xml",
+            "map": [
+                {
+                    "source": "C:\\Users\\anas\\.gradle\\caches\\transforms-2\\files-2.1\\976f7ce2c8a611ac2cc2c8aaa1abf9a8\\core-1.0.0\\res\\values-v21\\values-v21.xml",
+                    "from": {
+                        "startLines": "2,3,4,5,6,7,8,9,10,13",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "55,159,223,290,354,470,596,722,850,1022",
+                        "endLines": "2,3,4,5,6,7,8,9,12,17",
+                        "endColumns": "103,63,66,63,115,125,125,127,12,12",
+                        "endOffsets": "154,218,285,349,465,591,717,845,1017,1355"
+                    },
+                    "to": {
+                        "startLines": "2,3,4,5,6,7,14,18,72,75",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "55,159,223,290,354,470,927,1221,5252,5424",
+                        "endLines": "2,3,4,5,6,7,14,18,74,79",
+                        "endColumns": "103,63,66,63,115,125,125,127,12,12",
+                        "endOffsets": "154,218,285,349,465,591,1048,1344,5419,5757"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\anas\\.gradle\\caches\\transforms-2\\files-2.1\\b709d7c34fb0fd8adcf55a769634ffde\\leanback-1.0.0\\res\\values-v21\\values-v21.xml",
+                    "from": {
+                        "startLines": "2,3,7,13,17,20,25,29,52,55,59",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "55,144,418,933,1169,1377,1801,2095,3791,3989,4180",
+                        "endLines": "2,6,12,16,19,24,28,51,54,58,59",
+                        "endColumns": "88,12,12,12,12,12,12,12,12,12,72",
+                        "endOffsets": "139,413,928,1164,1372,1796,2090,3786,3984,4175,4248"
+                    },
+                    "to": {
+                        "startLines": "22,23,27,33,37,40,45,49,80,83,87",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "1516,1605,1879,2394,2630,2838,3262,3556,5762,5960,6151",
+                        "endLines": "22,26,32,36,39,44,48,71,82,86,87",
+                        "endColumns": "88,12,12,12,12,12,12,12,12,12,72",
+                        "endOffsets": "1600,1874,2389,2625,2833,3257,3551,5247,5955,6146,6219"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\anas\\.gradle\\caches\\transforms-2\\files-2.1\\4d53b1b3972c4d823cf51f7646ba79cd\\media-1.0.0\\res\\values-v21\\values-v21.xml",
+                    "from": {
+                        "startLines": "2,5,8,11",
+                        "startColumns": "4,4,4,4",
+                        "startOffsets": "55,223,386,554",
+                        "endLines": "4,7,10,13",
+                        "endColumns": "12,12,12,12",
+                        "endOffsets": "218,381,549,716"
+                    },
+                    "to": {
+                        "startLines": "8,11,15,19",
+                        "startColumns": "4,4,4,4",
+                        "startOffsets": "596,764,1053,1349",
+                        "endLines": "10,13,17,21",
+                        "endColumns": "12,12,12,12",
+                        "endOffsets": "759,922,1216,1511"
+                    }
+                }
+            ]
+        }
+    ]
+}

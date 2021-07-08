@@ -1,0 +1,18 @@
+[
+    {
+        "merged": "C:\\Users\\anas\\Desktop\\swann\\swann-mobile-app\\node_modules\\react-native-video\\android-exoplayer\\exo\\extensions\\gvr\\build\\intermediates\\res\\merged\\debug\\drawable-v21\\rippleable.xml",
+        "source": "C:\\Users\\anas\\.gradle\\caches\\transforms-2\\files-2.1\\c5dc0b2704c93a2c739515815509b969\\sdk-base-1.190.0\\res\\drawable-v21\\rippleable.xml"
+    },
+    {
+        "merged": "C:\\Users\\anas\\Desktop\\swann\\swann-mobile-app\\node_modules\\react-native-video\\android-exoplayer\\exo\\extensions\\gvr\\build\\intermediates\\res\\merged\\debug\\drawable-v21\\notification_action_background.xml",
+        "source": "C:\\Users\\anas\\.gradle\\caches\\transforms-2\\files-2.1\\397e67e26ef52c3d65c890cee6aea3eb\\core-1.1.0\\res\\drawable-v21\\notification_action_background.xml"
+    },
+    {
+        "merged": "C:\\Users\\anas\\Desktop\\swann\\swann-mobile-app\\node_modules\\react-native-video\\android-exoplayer\\exo\\extensions\\gvr\\build\\intermediates\\res\\merged\\debug\\drawable-v21\\exo_ripple_ffwd.xml",
+        "source": "C:\\Users\\anas\\Desktop\\swann\\swann-mobile-app\\node_modules\\react-native-video\\android-exoplayer\\exo\\library\\ui\\build\\intermediates\\packaged_res\\debug\\drawable-v21\\exo_ripple_ffwd.xml"
+    },
+    {
+        "merged": "C:\\Users\\anas\\Desktop\\swann\\swann-mobile-app\\node_modules\\react-native-video\\android-exoplayer\\exo\\extensions\\gvr\\build\\intermediates\\res\\merged\\debug\\drawable-v21\\exo_ripple_rew.xml",
+        "source": "C:\\Users\\anas\\Desktop\\swann\\swann-mobile-app\\node_modules\\react-native-video\\android-exoplayer\\exo\\library\\ui\\build\\intermediates\\packaged_res\\debug\\drawable-v21\\exo_ripple_rew.xml"
+    }
+]

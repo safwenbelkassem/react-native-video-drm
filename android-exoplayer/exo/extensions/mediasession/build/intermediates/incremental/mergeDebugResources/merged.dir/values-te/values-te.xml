@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="exo_media_action_repeat_all_description">అన్నింటినీ పునరావృతం చేయండి</string>
+    <string name="exo_media_action_repeat_off_description">దేన్నీ పునరావృతం చేయకండి</string>
+    <string name="exo_media_action_repeat_one_description">ఒకదాన్ని పునరావృతం చేయండి</string>
+    <string msgid="7988687684186075107" name="status_bar_notification_info_overflow">"999+"</string>
+</resources>

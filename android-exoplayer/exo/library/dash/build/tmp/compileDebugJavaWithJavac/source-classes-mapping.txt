@@ -1,0 +1,85 @@
+com/google/android/exoplayer2/source/dash/BuildConfig.java
+ com.google.android.exoplayer2.source.dash.BuildConfig
+com/google/android/exoplayer2/source/dash/manifest/DashManifest.java
+ com.google.android.exoplayer2.source.dash.manifest.DashManifest
+com/google/android/exoplayer2/source/dash/manifest/UtcTimingElement.java
+ com.google.android.exoplayer2.source.dash.manifest.UtcTimingElement
+com/google/android/exoplayer2/source/dash/DashSegmentIndex.java
+ com.google.android.exoplayer2.source.dash.DashSegmentIndex
+com/google/android/exoplayer2/source/dash/manifest/package-info.java
+ com.google.android.exoplayer2.source.dash.manifest.package-info
+com/google/android/exoplayer2/source/dash/manifest/Representation.java
+ com.google.android.exoplayer2.source.dash.manifest.Representation
+ com.google.android.exoplayer2.source.dash.manifest.Representation$1
+ com.google.android.exoplayer2.source.dash.manifest.Representation$MultiSegmentRepresentation
+ com.google.android.exoplayer2.source.dash.manifest.Representation$SingleSegmentRepresentation
+com/google/android/exoplayer2/source/dash/manifest/EventStream.java
+ com.google.android.exoplayer2.source.dash.manifest.EventStream
+com/google/android/exoplayer2/source/dash/DashUtil.java
+ com.google.android.exoplayer2.source.dash.DashUtil
+com/google/android/exoplayer2/source/dash/manifest/RangedUri.java
+ com.google.android.exoplayer2.source.dash.manifest.RangedUri
+com/google/android/exoplayer2/source/dash/manifest/DashManifestParser.java
+ com.google.android.exoplayer2.source.dash.manifest.DashManifestParser
+ com.google.android.exoplayer2.source.dash.manifest.DashManifestParser$RepresentationInfo
+com/google/android/exoplayer2/source/dash/manifest/AdaptationSet.java
+ com.google.android.exoplayer2.source.dash.manifest.AdaptationSet
+com/google/android/exoplayer2/source/dash/manifest/UrlTemplate.java
+ com.google.android.exoplayer2.source.dash.manifest.UrlTemplate
+com/google/android/exoplayer2/source/dash/manifest/Period.java
+ com.google.android.exoplayer2.source.dash.manifest.Period
+com/google/android/exoplayer2/source/dash/package-info.java
+ com.google.android.exoplayer2.source.dash.package-info
+com/google/android/exoplayer2/source/dash/EventSampleStream.java
+ com.google.android.exoplayer2.source.dash.EventSampleStream
+com/google/android/exoplayer2/source/dash/offline/DashDownloader.java
+ com.google.android.exoplayer2.source.dash.offline.DashDownloader
+ com.google.android.exoplayer2.source.dash.offline.DashDownloader$1
+com/google/android/exoplayer2/source/dash/DefaultDashChunkSource.java
+ com.google.android.exoplayer2.source.dash.DefaultDashChunkSource
+ com.google.android.exoplayer2.source.dash.DefaultDashChunkSource$Factory
+ com.google.android.exoplayer2.source.dash.DefaultDashChunkSource$RepresentationHolder
+ com.google.android.exoplayer2.source.dash.DefaultDashChunkSource$RepresentationSegmentIterator
+com/google/android/exoplayer2/source/dash/DashChunkSource.java
+ com.google.android.exoplayer2.source.dash.DashChunkSource
+ com.google.android.exoplayer2.source.dash.DashChunkSource$Factory
+com/google/android/exoplayer2/source/dash/DashWrappingSegmentIndex.java
+ com.google.android.exoplayer2.source.dash.DashWrappingSegmentIndex
+com/google/android/exoplayer2/source/dash/PlayerEmsgHandler.java
+ com.google.android.exoplayer2.source.dash.PlayerEmsgHandler
+ com.google.android.exoplayer2.source.dash.PlayerEmsgHandler$ManifestExpiryEventInfo
+ com.google.android.exoplayer2.source.dash.PlayerEmsgHandler$PlayerEmsgCallback
+ com.google.android.exoplayer2.source.dash.PlayerEmsgHandler$PlayerTrackEmsgHandler
+com/google/android/exoplayer2/source/dash/DashMediaSource.java
+ com.google.android.exoplayer2.source.dash.DashMediaSource
+ com.google.android.exoplayer2.source.dash.DashMediaSource$1
+ com.google.android.exoplayer2.source.dash.DashMediaSource$DashTimeline
+ com.google.android.exoplayer2.source.dash.DashMediaSource$DefaultPlayerEmsgCallback
+ com.google.android.exoplayer2.source.dash.DashMediaSource$Factory
+ com.google.android.exoplayer2.source.dash.DashMediaSource$Iso8601Parser
+ com.google.android.exoplayer2.source.dash.DashMediaSource$ManifestCallback
+ com.google.android.exoplayer2.source.dash.DashMediaSource$ManifestLoadErrorThrower
+ com.google.android.exoplayer2.source.dash.DashMediaSource$PeriodSeekInfo
+ com.google.android.exoplayer2.source.dash.DashMediaSource$UtcTimestampCallback
+ com.google.android.exoplayer2.source.dash.DashMediaSource$XsDateTimeParser
+com/google/android/exoplayer2/source/dash/DashManifestStaleException.java
+ com.google.android.exoplayer2.source.dash.DashManifestStaleException
+com/google/android/exoplayer2/source/dash/DashMediaPeriod.java
+ com.google.android.exoplayer2.source.dash.DashMediaPeriod
+ com.google.android.exoplayer2.source.dash.DashMediaPeriod$TrackGroupInfo
+ com.google.android.exoplayer2.source.dash.DashMediaPeriod$TrackGroupInfo$TrackGroupCategory
+com/google/android/exoplayer2/source/dash/manifest/ProgramInformation.java
+ com.google.android.exoplayer2.source.dash.manifest.ProgramInformation
+com/google/android/exoplayer2/source/dash/offline/package-info.java
+ com.google.android.exoplayer2.source.dash.offline.package-info
+com/google/android/exoplayer2/source/dash/manifest/Descriptor.java
+ com.google.android.exoplayer2.source.dash.manifest.Descriptor
+com/google/android/exoplayer2/source/dash/manifest/SingleSegmentIndex.java
+ com.google.android.exoplayer2.source.dash.manifest.SingleSegmentIndex
+com/google/android/exoplayer2/source/dash/manifest/SegmentBase.java
+ com.google.android.exoplayer2.source.dash.manifest.SegmentBase
+ com.google.android.exoplayer2.source.dash.manifest.SegmentBase$MultiSegmentBase
+ com.google.android.exoplayer2.source.dash.manifest.SegmentBase$SegmentList
+ com.google.android.exoplayer2.source.dash.manifest.SegmentBase$SegmentTemplate
+ com.google.android.exoplayer2.source.dash.manifest.SegmentBase$SegmentTimelineElement
+ com.google.android.exoplayer2.source.dash.manifest.SegmentBase$SingleSegmentBase

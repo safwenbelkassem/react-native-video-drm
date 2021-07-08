@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string msgid="3980628489251198480" name="default_notification_channel_name">"பாடல் விவரம்"</string>
+    <string msgid="7844788760550939526" name="pause_button_content_description">"இடைநிறுத்தும் பட்டன்"</string>
+    <string msgid="5898492519310326971" name="play_button_content_description">"இயக்கும் பட்டன்"</string>
+    <string msgid="3508534122676007656" name="skip_to_next_item_button_content_description">"அடுத்ததற்குச் செல்லும் பட்டன்"</string>
+    <string msgid="250823119142607886" name="skip_to_previous_item_button_content_description">"முந்தையதற்குச் செல்லும் பட்டன்"</string>
+    <string msgid="8106346172024741305" name="status_bar_notification_info_overflow">"999+"</string>
+</resources>

@@ -1,0 +1,82 @@
+{
+    "logs": [
+        {
+            "outputFile": "C:\\Users\\anas\\Desktop\\swann\\swann-mobile-app\\node_modules\\react-native-video\\android-exoplayer\\exo\\extensions\\mediasession\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-ml\\values-ml.xml",
+            "map": [
+                {
+                    "source": "C:\\Users\\anas\\.gradle\\caches\\transforms-2\\files-2.1\\ccbfcb44b3c40a86a55b1eb8153810ef\\core-1.0.1\\res\\values-ml\\values-ml.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    },
+                    "to": {
+                        "startLines": "5",
+                        "startColumns": "4",
+                        "startOffsets": "322",
+                        "endColumns": "100",
+                        "endOffsets": "418"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\anas\\Desktop\\swann\\swann-mobile-app\\node_modules\\react-native-video\\android-exoplayer\\exo\\extensions\\mediasession\\src\\main\\res\\values-ml\\strings.xml",
+                    "from": {
+                        "startLines": "4,2,3",
+                        "startColumns": "2,2,2",
+                        "startOffsets": "232,55,144",
+                        "endColumns": "85,87,86",
+                        "endOffsets": "315,140,228"
+                    },
+                    "to": {
+                        "startLines": "2,3,4",
+                        "startColumns": "4,4,4",
+                        "startOffsets": "55,143,233",
+                        "endColumns": "87,89,88",
+                        "endOffsets": "138,228,317"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "C:\\Users\\anas\\Desktop\\swann\\swann-mobile-app\\node_modules\\react-native-video\\android-exoplayer\\exo\\extensions\\mediasession\\build\\intermediates\\res\\merged\\debug\\values-ml\\values-ml.xml",
+            "map": [
+                {
+                    "source": "C:\\Users\\anas\\.gradle\\caches\\transforms-2\\files-2.1\\ccbfcb44b3c40a86a55b1eb8153810ef\\core-1.0.1\\res\\values-ml\\values-ml.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    },
+                    "to": {
+                        "startLines": "5",
+                        "startColumns": "4",
+                        "startOffsets": "322",
+                        "endColumns": "100",
+                        "endOffsets": "418"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\anas\\Desktop\\swann\\swann-mobile-app\\node_modules\\react-native-video\\android-exoplayer\\exo\\extensions\\mediasession\\src\\main\\res\\values-ml\\strings.xml",
+                    "from": {
+                        "startLines": "4,2,3",
+                        "startColumns": "2,2,2",
+                        "startOffsets": "232,55,144",
+                        "endColumns": "85,87,86",
+                        "endOffsets": "315,140,228"
+                    },
+                    "to": {
+                        "startLines": "2,3,4",
+                        "startColumns": "4,4,4",
+                        "startOffsets": "55,143,233",
+                        "endColumns": "87,89,88",
+                        "endOffsets": "138,228,317"
+                    }
+                }
+            ]
+        }
+    ]
+}

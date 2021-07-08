@@ -1,0 +1,18 @@
+[
+    {
+        "merged": "C:\\Users\\anas\\Desktop\\swann\\swann-mobile-app\\node_modules\\react-native-video\\android-exoplayer\\exo\\extensions\\leanback\\build\\intermediates\\res\\merged\\debug\\raw\\lb_voice_success.ogg",
+        "source": "C:\\Users\\anas\\.gradle\\caches\\transforms-2\\files-2.1\\b709d7c34fb0fd8adcf55a769634ffde\\leanback-1.0.0\\res\\raw\\lb_voice_success.ogg"
+    },
+    {
+        "merged": "C:\\Users\\anas\\Desktop\\swann\\swann-mobile-app\\node_modules\\react-native-video\\android-exoplayer\\exo\\extensions\\leanback\\build\\intermediates\\res\\merged\\debug\\raw\\lb_voice_no_input.ogg",
+        "source": "C:\\Users\\anas\\.gradle\\caches\\transforms-2\\files-2.1\\b709d7c34fb0fd8adcf55a769634ffde\\leanback-1.0.0\\res\\raw\\lb_voice_no_input.ogg"
+    },
+    {
+        "merged": "C:\\Users\\anas\\Desktop\\swann\\swann-mobile-app\\node_modules\\react-native-video\\android-exoplayer\\exo\\extensions\\leanback\\build\\intermediates\\res\\merged\\debug\\raw\\lb_voice_failure.ogg",
+        "source": "C:\\Users\\anas\\.gradle\\caches\\transforms-2\\files-2.1\\b709d7c34fb0fd8adcf55a769634ffde\\leanback-1.0.0\\res\\raw\\lb_voice_failure.ogg"
+    },
+    {
+        "merged": "C:\\Users\\anas\\Desktop\\swann\\swann-mobile-app\\node_modules\\react-native-video\\android-exoplayer\\exo\\extensions\\leanback\\build\\intermediates\\res\\merged\\debug\\raw\\lb_voice_open.ogg",
+        "source": "C:\\Users\\anas\\.gradle\\caches\\transforms-2\\files-2.1\\b709d7c34fb0fd8adcf55a769634ffde\\leanback-1.0.0\\res\\raw\\lb_voice_open.ogg"
+    }
+]
