@@ -76,6 +76,9 @@ public class PlayerDownloadService extends DownloadService {
   @NonNull
   protected Notification getForegroundNotification(@NonNull List<Download> downloads) {
     return PlayerUtil.getDownloadNotificationHelper(/* context= */ this)
+
+
+
         .buildProgressNotification(
             /* context= */ this,
             R.drawable.ic_download,

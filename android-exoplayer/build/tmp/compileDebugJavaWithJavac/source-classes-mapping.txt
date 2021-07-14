@@ -1,6 +1,5 @@
-com/brentvatne/exoplayer/PlayerDownloadService.java
- com.brentvatne.exoplayer.PlayerDownloadService
- com.brentvatne.exoplayer.PlayerDownloadService$TerminalStateNotificationHelper
+com/brentvatne/react/ReactVideoPackage.java
+ com.brentvatne.react.ReactVideoPackage
 com/brentvatne/exoplayer/ResizeMode.java
  com.brentvatne.exoplayer.ResizeMode
  com.brentvatne.exoplayer.ResizeMode$Mode
@@ -28,6 +27,9 @@ com/brentvatne/receiver/AudioBecomingNoisyReceiver.java
  com.brentvatne.receiver.AudioBecomingNoisyReceiver
 com/brentvatne/exoplayer/ReactExoplayerConfig.java
  com.brentvatne.exoplayer.ReactExoplayerConfig
+com/brentvatne/exoplayer/PlayerDownloadService.java
+ com.brentvatne.exoplayer.PlayerDownloadService
+ com.brentvatne.exoplayer.PlayerDownloadService$TerminalStateNotificationHelper
 com/brentvatne/exoplayer/DownloadTracker.java
  com.brentvatne.exoplayer.DownloadTracker
  com.brentvatne.exoplayer.DownloadTracker$1
@@ -36,8 +38,6 @@ com/brentvatne/exoplayer/DownloadTracker.java
  com.brentvatne.exoplayer.DownloadTracker$StartDownloadDialogHelper
  com.brentvatne.exoplayer.DownloadTracker$WidevineOfflineLicenseFetchTask
  com.brentvatne.exoplayer.DownloadTracker$WidevineOfflineLicenseRenew
-com/brentvatne/react/ReactVideoPackage.java
- com.brentvatne.react.ReactVideoPackage
 com/brentvatne/exoplayer/PlayerUtil.java
  com.brentvatne.exoplayer.PlayerUtil
 com/brentvatne/exoplayer/ReactExoplayerViewManager.java

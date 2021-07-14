@@ -57,7 +57,7 @@ public final class DownloadNotificationHelper {
       @DrawableRes int smallIcon,
       @Nullable PendingIntent contentIntent,
       @Nullable String message,
-      List<Download> downloads) {
+      List<Download> downloads)  {
     float totalPercentage = 0;
     int downloadTaskCount = 0;
     boolean allDownloadPercentagesUnknown = true;
@@ -94,6 +94,8 @@ public final class DownloadNotificationHelper {
       progress = (int) (totalPercentage / downloadTaskCount);
       indeterminate = allDownloadPercentagesUnknown && haveDownloadedBytes;
     }
+
+
     return buildNotification(
         context,
         smallIcon,

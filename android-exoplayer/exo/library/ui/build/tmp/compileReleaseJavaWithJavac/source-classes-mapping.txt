@@ -45,8 +45,8 @@ com/google/android/exoplayer2/ui/WebViewSubtitleOutput.java
  com.google.android.exoplayer2.ui.WebViewSubtitleOutput$2
 com/google/android/exoplayer2/ui/DebugTextViewHelper.java
  com.google.android.exoplayer2.ui.DebugTextViewHelper
-com/google/android/exoplayer2/ui/DownloadNotificationUtil.java
- com.google.android.exoplayer2.ui.DownloadNotificationUtil
+com/google/android/exoplayer2/ui/SubtitlePainter.java
+ com.google.android.exoplayer2.ui.SubtitlePainter
 com/google/android/exoplayer2/ui/AspectRatioFrameLayout.java
  com.google.android.exoplayer2.ui.AspectRatioFrameLayout
  com.google.android.exoplayer2.ui.AspectRatioFrameLayout$1
@@ -105,8 +105,9 @@ com/google/android/exoplayer2/ui/SpannedToHtmlConverter.java
  com.google.android.exoplayer2.ui.SpannedToHtmlConverter$Transition
 com/google/android/exoplayer2/ui/package-info.java
  com.google.android.exoplayer2.ui.package-info
-com/google/android/exoplayer2/ui/DownloadNotificationHelper.java
- com.google.android.exoplayer2.ui.DownloadNotificationHelper
+com/google/android/exoplayer2/ui/spherical/TouchTracker.java
+ com.google.android.exoplayer2.ui.spherical.TouchTracker
+ com.google.android.exoplayer2.ui.spherical.TouchTracker$Listener
 com/google/android/exoplayer2/ui/SubtitleView.java
  com.google.android.exoplayer2.ui.SubtitleView
  com.google.android.exoplayer2.ui.SubtitleView$Output
@@ -119,8 +120,7 @@ com/google/android/exoplayer2/ui/DefaultTrackNameProvider.java
  com.google.android.exoplayer2.ui.DefaultTrackNameProvider
 com/google/android/exoplayer2/ui/spherical/package-info.java
  com.google.android.exoplayer2.ui.spherical.package-info
-com/google/android/exoplayer2/ui/SubtitlePainter.java
- com.google.android.exoplayer2.ui.SubtitlePainter
-com/google/android/exoplayer2/ui/spherical/TouchTracker.java
- com.google.android.exoplayer2.ui.spherical.TouchTracker
- com.google.android.exoplayer2.ui.spherical.TouchTracker$Listener
+com/google/android/exoplayer2/ui/DownloadNotificationHelper.java
+ com.google.android.exoplayer2.ui.DownloadNotificationHelper
+com/google/android/exoplayer2/ui/DownloadNotificationUtil.java
+ com.google.android.exoplayer2.ui.DownloadNotificationUtil

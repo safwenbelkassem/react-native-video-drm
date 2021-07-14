@@ -291,9 +291,16 @@ public class DownloadTracker implements  DownloadHelper.Callback{
 
   public void deleteDownload(MediaItem mediaItem) {
     Download download = downloads.get(checkNotNull(mediaItem.playbackProperties).uri);
-    DownloadService.sendRemoveDownload(
-            context, PlayerDownloadService.class, download.request.id, /* foreground= */ false);
-  }
+
+    if(download !=null){
+      DownloadService.sendRemoveDownload(
+              context, PlayerDownloadService.class, download.request.id, /* foreground= */ false);
+
+    }else{
+      dispatchFailEventtoRN();
+    }
+
+     }
 
   public void deleteTemporaryDownload(MediaItem mediaItem) {
     Download download = downloads.get(checkNotNull(mediaItem.playbackProperties).uri);
