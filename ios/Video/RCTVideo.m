@@ -1886,14 +1886,43 @@ AssetPersistenceManager *assetPersistenceManager;
     id token = [self->_source objectForKey:@"token"];
     NSMutableDictionary *notSendValue = [[[NSUserDefaults standardUserDefaults] objectForKey:@"valueNotSent"] mutableCopy];
     NSLog(@"chapterID == %@savedValue == %@",chapterID ,savedValue);
+    NSLog(@"token === %@",token);
     if (savedValue != 0) {
-        NSString *urlString = [NSString stringWithFormat:@"https://swann.k8s.satoripop.io/api/v1/chapter/%@/read?time=%@", chapterID, savedValue];
+//        NSMutableDictionary *dict1 = [[NSMutableDictionary alloc]init];
+//        [dict1 setObject:chapterID forKey:@"chapter_id"];
+//        [dict1 setObject:savedValue forKey:@"time"];
+//        NSArray *array = @[dict1];
+//        NSMutableDictionary *dict = [[NSMutableDictionary alloc]init];
+//
+//          [dict setObject:array forKey:@"reads"];
+
+//        NSLog(@"Send response %@",dict);
+        double latdouble = [savedValue doubleValue];
+
+        int vOut = (int)latdouble;
+
+        NSDictionary *json = @{@"chapter_id":chapterID, @"time":@(vOut)};
+        NSArray *array = @[json];
+        NSDictionary *jsonBodyDict = @{@"reads":array};
+//        NSLog(@"Send response %@",jsonBodyDict);
+        NSData * JsonData =[NSJSONSerialization dataWithJSONObject:jsonBodyDict options:NSJSONWritingPrettyPrinted error:nil];
+//        NSLog(@"Send JsonData %@",JsonData);
+        
+        NSString *urlString = [NSString stringWithFormat:@"https://swann.k8s.satoripop.io/api/v1/chapters/read"];
+
+
         NSMutableURLRequest *urlRequest  = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:urlString]];
+//        NSLog(@"urlRequest=== %@",urlRequest);
         [urlRequest setHTTPMethod:@"POST"];
         [urlRequest setValue:token forHTTPHeaderField:@"Authorization"];
+        [urlRequest setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+        [urlRequest setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+        [urlRequest setHTTPBody: JsonData];
         NSURLSession *session = [NSURLSession sharedSession];
+//        NSLog(@"Request body %@", [[NSString alloc] initWithData:[urlRequest HTTPBody] encoding:NSUTF8StringEncoding]);
         NSURLSessionDataTask *dataTask = [session dataTaskWithRequest:urlRequest completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
             NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
+//            NSLog(@"Send response %@",httpResponse);
             if(httpResponse.statusCode == 201)
             {
                 if (notSendValue && notSendValue[chapterID]) {
