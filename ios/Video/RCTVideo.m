@@ -10,6 +10,9 @@
 #include <MediaAccessibility/MediaAccessibility.h>
 #include <AVFoundation/AVFoundation.h>
 #import <CommonCrypto/CommonDigest.h>
+#import <sys/socket.h>
+#import <netinet/in.h>
+#import <SystemConfiguration/SystemConfiguration.h>
 
 static NSString *const statusKeyPath = @"status";
 static NSString *const playbackLikelyToKeepUpKeyPath = @"playbackLikelyToKeepUp";
@@ -26,7 +29,7 @@ static NSMutableDictionary<AVAssetDownloadTask *, AVMediaSelection *> *mediaSele
 AVAssetDownloadURLSession *assetDownloadURLSession;
 NSURLSessionConfiguration *configuration;
 static NSMutableArray<NSString *> *allLinks;
-
+NSString* accountId;
 NSMutableArray* AllDownloadLinks ;
 NSMutableArray* links ;
 NSMutableArray* downloadLinks;
@@ -59,8 +62,10 @@ AssetPersistenceManager *assetPersistenceManager;
     BOOL *debug;
     AVPlayer *_player;
     AVPlayerItem *_playerItem;
+    NSString* originalLink;
+    NSString* skdLink;
     // AVPlayerItemAccessLog *_playerItemAccess;
-    
+    NSMutableArray *bookLinks ;
     NSDictionary *_source;
     BOOL _playerItemObserversSet;
     BOOL _playerBufferEmpty;
@@ -72,8 +77,16 @@ AssetPersistenceManager *assetPersistenceManager;
     BOOL _requestingCertificateErrored;
     
     
-    /*Download or play**/
-    BOOL *_downloadorplay;
+    /*Download or play
+
+     2 : removing
+     1 : playing
+     0 : downloading
+     
+     **/
+    
+    NSInteger _DeleteListIndex;
+    NSInteger _downloadorplay;
     /* DRM */
     NSDictionary *_drm;
     AVAssetResourceLoadingRequest *_loadingRequest;
@@ -444,6 +457,7 @@ AssetPersistenceManager *assetPersistenceManager;
         
         // perform on next run loop, otherwise other passed react-props may not be set
         [self playerItemForSource:self->_source withCallback:^(AVPlayerItem * playerItem) {
+           
             self->_playerItem = playerItem;
             _playerItem = playerItem;
             [self setPreferredForwardBufferDuration:_preferredForwardBufferDuration];
@@ -476,10 +490,14 @@ AssetPersistenceManager *assetPersistenceManager;
                 [self setAutomaticallyWaitsToMinimizeStalling:_automaticallyWaitsToMinimizeStalling];
             }
             
+            
             //Perform on next run loop, otherwise onVideoLoadStart is nil
             if (self.onVideoLoadStart) {
+                accountId =  [self->_source objectForKey:@"accountId"];
+                accountId = [NSString stringWithFormat:@"%@", accountId];
                 id uri = [self->_source objectForKey:@"uri"];
                 id type = [self->_source objectForKey:@"type"];
+     
                 self.onVideoLoadStart(@{@"src": @{
                                                 @"uri": uri ? uri : [NSNull null],
                                                 @"type": type ? type : [NSNull null],
@@ -587,30 +605,55 @@ AssetPersistenceManager *assetPersistenceManager;
     return  output;
 }
 
--(NSURL*)contentKeyLocationForAsset:(NSString*)assetId error:(NSError**)error {
 
-    NSURL* libraryDir = [[NSFileManager defaultManager] URLForDirectory:NSLibraryDirectory inDomain:NSUserDomainMask appropriateForURL:nil create:NO error:error];
+-(NSURL*)contentKeyLocationForAsset:(NSString*)assetId accountId:(NSString*)accId error:(NSError**)error {
+
+    NSURL* libraryDir = [[NSFileManager defaultManager] URLForDirectory:NSDocumentDirectory inDomain:NSUserDomainMask appropriateForURL:nil create:YES error:error];
+    
+    if (!libraryDir) {
+        return nil;
+    }
+    NSString* HexedAssetId = [self hexedMD5:assetId];
+    HexedAssetId = [HexedAssetId stringByAppendingString:@"-"];
+    assetId = [HexedAssetId stringByAppendingString:accId];
+    
+    NSURL* keyStoreDir = [libraryDir URLByAppendingPathComponent:@"SwannKeyStore" isDirectory:YES];
+    // NSURL*  keyStoreDir = [libraryDir URLByAppendingPathComponent:assetId isDirectory:YES];
+    if (![[NSFileManager defaultManager] createDirectoryAtURL:keyStoreDir withIntermediateDirectories:YES attributes:nil error:error]) {
+        return nil;
+    }
+ 
+    
+
+    return [keyStoreDir URLByAppendingPathComponent:[NSString stringWithFormat:@"%@.key", assetId]];
+}
+
+-(NSURL*)fetchContentKeysForAsset:(NSString*)assetId error:(NSError**)error {
+
+    NSURL* libraryDir = [[NSFileManager defaultManager] URLForDirectory:NSDocumentDirectory inDomain:NSUserDomainMask appropriateForURL:nil create:YES error:error];
     
     if (!libraryDir) {
         return nil;
     }
     
     NSURL* keyStoreDir = [libraryDir URLByAppendingPathComponent:@"SwannKeyStore" isDirectory:YES];
+   // NSURL*  keyStoreDir = [libraryDir URLByAppendingPathComponent:assetId isDirectory:YES];
     if (![[NSFileManager defaultManager] createDirectoryAtURL:keyStoreDir withIntermediateDirectories:YES attributes:nil error:error]) {
         return nil;
     }
-    
-    return [keyStoreDir URLByAppendingPathComponent:[NSString stringWithFormat:@"%@.key", [self hexedMD5:assetId]]];
+    NSString* HexedAssetId = [self hexedMD5:assetId];
+    HexedAssetId = [HexedAssetId stringByAppendingString:@"-"];
+    assetId = [HexedAssetId stringByAppendingString:accountId];
+    return [keyStoreDir URLByAppendingPathComponent:[NSString stringWithFormat:@"%@.key", assetId]];
 }
 
 
 
 
 
-
--(NSData*)loadPersistentContentKeyForAsset:(NSString*)assetId error:(NSError**)error {
+-(NSData*)loadPersistentContentKeyForAsset:(NSString*)assetId accountid:(NSString*)accountid  error:(NSError**)error {
     
-    NSURL* url = [self contentKeyLocationForAsset:assetId error:error];
+    NSURL* url = [self contentKeyLocationForAsset:assetId accountId:accountid error:&error];
     NSLog(@"we are reading key from %@",url);
     if (!url) {
       //  KPLogError(@"Can't get contentkey location. Error: %@", *error);
@@ -638,6 +681,7 @@ AssetPersistenceManager *assetPersistenceManager;
     bool isAsset = [RCTConvert BOOL:[source objectForKey:@"isAsset"]];
     bool shouldCache = [RCTConvert BOOL:[source objectForKey:@"shouldCache"]];
     NSString *uri = [source objectForKey:@"uri"];
+    accountId =  [source objectForKey:@"accountId"];
     NSString *type = [source objectForKey:@"type"];
     AVURLAsset *asset;
    
@@ -677,23 +721,28 @@ AssetPersistenceManager *assetPersistenceManager;
             
         
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    
         
     if ([defaults valueForKey:uri]) {
         
         NSLog(@"playing from local path");
         
         NSURL *assetURL = [NSURL URLWithString:[defaults valueForKey:uri]];
+        NSLog(@"reading from local at path %@",assetURL.absoluteString);
         asset = [AVURLAsset URLAssetWithURL:assetURL options:assetOptions];
         
+        
+  
     }else{
         
         NSLog(@"playing from remote path");
         
         asset = [AVURLAsset URLAssetWithURL:[NSURL URLWithString:uri] options:assetOptions];
      
-        
+      
         
     }
+    originalLink = uri  ;
     
     asset.resourceLoader.preloadsEligibleContentKeys = YES;
  
@@ -710,7 +759,8 @@ AssetPersistenceManager *assetPersistenceManager;
     
     if (self->_drm != nil) {
         //                dispatch_queue_t queue = dispatch_queue_create("assetQueue", nil);
-        _downloadorplay = true;
+        _downloadorplay = 1;
+      
         dispatch_queue_t queue = dispatch_queue_create("com.icapps.fairplay.queue", nil);
         [asset.resourceLoader setDelegate:self queue:queue];
    
@@ -1702,6 +1752,14 @@ AssetPersistenceManager *assetPersistenceManager;
     }];
 }
 
+-(void)removeFromStorage{
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSMutableArray *arr1  = [NSMutableArray arrayWithArray:[defaults arrayForKey:@"Downloaders"]];
+      [arr1 removeObject:accountId];
+      [defaults setObject:arr1 forKey:@"Downloaders"];
+      [defaults synchronize];
+}
+
 - (void)setFilterEnabled:(BOOL)filterEnabled {
     _filterEnabled = filterEnabled;
 }
@@ -1828,14 +1886,43 @@ AssetPersistenceManager *assetPersistenceManager;
     id token = [self->_source objectForKey:@"token"];
     NSMutableDictionary *notSendValue = [[[NSUserDefaults standardUserDefaults] objectForKey:@"valueNotSent"] mutableCopy];
     NSLog(@"chapterID == %@savedValue == %@",chapterID ,savedValue);
+    NSLog(@"token === %@",token);
     if (savedValue != 0) {
-        NSString *urlString = [NSString stringWithFormat:@"https://swann.k8s.satoripop.io/api/v1/chapter/%@/read?time=%@", chapterID, savedValue];
+//        NSMutableDictionary *dict1 = [[NSMutableDictionary alloc]init];
+//        [dict1 setObject:chapterID forKey:@"chapter_id"];
+//        [dict1 setObject:savedValue forKey:@"time"];
+//        NSArray *array = @[dict1];
+//        NSMutableDictionary *dict = [[NSMutableDictionary alloc]init];
+//
+//          [dict setObject:array forKey:@"reads"];
+
+//        NSLog(@"Send response %@",dict);
+        double latdouble = [savedValue doubleValue];
+
+        int vOut = (int)latdouble;
+
+        NSDictionary *json = @{@"chapter_id":chapterID, @"time":@(vOut)};
+        NSArray *array = @[json];
+        NSDictionary *jsonBodyDict = @{@"reads":array};
+//        NSLog(@"Send response %@",jsonBodyDict);
+        NSData * JsonData =[NSJSONSerialization dataWithJSONObject:jsonBodyDict options:NSJSONWritingPrettyPrinted error:nil];
+//        NSLog(@"Send JsonData %@",JsonData);
+        
+        NSString *urlString = [NSString stringWithFormat:@"https://swann.k8s.satoripop.io/api/v1/chapters/read"];
+
+
         NSMutableURLRequest *urlRequest  = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:urlString]];
+//        NSLog(@"urlRequest=== %@",urlRequest);
         [urlRequest setHTTPMethod:@"POST"];
         [urlRequest setValue:token forHTTPHeaderField:@"Authorization"];
+        [urlRequest setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+        [urlRequest setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+        [urlRequest setHTTPBody: JsonData];
         NSURLSession *session = [NSURLSession sharedSession];
+//        NSLog(@"Request body %@", [[NSString alloc] initWithData:[urlRequest HTTPBody] encoding:NSUTF8StringEncoding]);
         NSURLSessionDataTask *dataTask = [session dataTaskWithRequest:urlRequest completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
             NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
+//            NSLog(@"Send response %@",httpResponse);
             if(httpResponse.statusCode == 201)
             {
                 if (notSendValue && notSendValue[chapterID]) {
@@ -1874,55 +1961,127 @@ AssetPersistenceManager *assetPersistenceManager;
         
     }
 }
-- (void)deleteBook:(NSArray *)assetLink {
+- (void)deleteBook:(NSArray *)assetLink accountID:(NSInteger *)accountID  {
+   
+    accountId = [NSString stringWithFormat:@"%d",accountID];
+    bookLinks = [assetLink mutableCopy];
+    _DeleteListIndex = 0;
+    [self deletebookAction];
+    
+    
+}
+
+-(void)deletebookAction{
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     NSError *error = nil;
-    
-    NSLog(@"removing the keys and assets for the selected book ");
-    NSMutableArray *bookLinks = [assetLink mutableCopy];
-    
     if(bookLinks){
+        
         
     
     for(id link in bookLinks) {
-    @try {
-        
-        NSLog(@"deleting Key and asset for %@",link);
-        NSString *localFileLocation = [userDefaults valueForKey:link];
-        if (localFileLocation) {
-            
-            //Removing the Asset
-            
-            [[NSFileManager defaultManager] removeItemAtPath:localFileLocation error:&error];
-            [userDefaults removeObjectForKey:link];
-            
-            NSError *error = nil;
-            
-            //Removing the Key
-            NSURL* url = [self contentKeyLocationForAsset:link error:&error];
-           
-            [[NSFileManager defaultManager] removeItemAtURL:url error:&error];
-            [userDefaults removeObjectForKey:link];
-        }
+       
+        NSString* myLink = link;
+        [self dispatchDeleteDelegate:myLink];
+    
+          
         
     }
-   
-    @catch (NSException *exception) {
-        NSLog(@"An error occured deleting the file: %@\n%@", exception, error.localizedDescription);
-    }
-    }
-    }else{
-        NSLog(@"the book requested might be null");
+       
     }
 }
-//Launch the HLS download
-- (void)save:(NSArray*)link resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject {
+   
+ 
     
-    configuration = [NSURLSessionConfiguration backgroundSessionConfigurationWithIdentifier:@"SWANN"];
+
+
+
+
+-(void)dispatchDeleteDelegate:(NSString*) link{
+    
+    
+    NSLog(@"Deleting asset from here : 2");
+    _downloadorplay = 2;
 
     
+
+ 
+    
+//   [self playerItemPrepareText:_asset assetOptions:nil withCallback:nil];
+//
+          
+   
+    NSString* HexedAssetId;
+    HexedAssetId = [link stringByAppendingString:@"-"];
+    //assetId = [HexedAssetId stringByAppendingString:accountId];
+    NSString *valueToSave = [HexedAssetId stringByAppendingString:accountId];
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString* assetId = [defaults valueForKey:valueToSave];
+    NSLog(@"getting original link ===== %@",valueToSave);
+    NSLog(@"assetId SKD link ===== %@",assetId);
+       
+      
+         
+   
+    _player  = nil;
+    
+    
+    NSError *error = nil;
+    
+    //Removing the Key
+    
+    
+   
+    NSLog(@"account ID === %@",accountId);
+
+    NSString *assetIDString = assetId;
+   
+   
+
+    
+    NSURL* url = [self contentKeyLocationForAsset:assetIDString accountId:accountId error:&error];
+    
+    
+
+  //  NSURL* keyStoreDir = [libraryDir URLByAppendingPathComponent:@"SwannKeyStore" isDirectory:YES];
+//      NSURL*  keyStoreDir = [libraryDir URLByAppendingPathComponent:assetId isDirectory:YES];
+   //  keyStoreDir = [keyStoreDir URLByAppendingPathComponent:myLink isDirectory:YES];
+  
+    
+    NSLog(@"removing key for url === %@",url);
+//    NSLog(@"removing Directory for url === %@",keyStoreDir);
+    
+    BOOL success = [[NSFileManager defaultManager] removeItemAtURL:url error:&error];
+    if(success){
+        NSLog(@"deleted the url %@",url);
+    }else{
+        NSLog(@"failed to delete the folder %@ ",url);
+    }
+    
+ 
+ 
+
+        if(error){
+            NSLog(@"error removing key ==== %@",error);
+        }
+    
+   
+        
+  
+  
+    [self BookAssetUsageVerification:assetIDString originalLink:link];
+          
+
+}
+
+
+
+
+//Launch the HLS download
+- (void)save:(NSArray*)link AccountID:(NSInteger *)accountID resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject {
+    configuration = [NSURLSessionConfiguration backgroundSessionConfigurationWithIdentifier:@"SWANN"];
+    accountId = [NSString stringWithFormat:@"%d",accountID];
     assetDownloadURLSession = [AVAssetDownloadURLSession sessionWithConfiguration:configuration assetDownloadDelegate:self delegateQueue:NSOperationQueue.mainQueue];
-    _downloadorplay = false;
+    _downloadorplay = 0;
     //Launch the download for each link received
    
     AllDownloadLinks = [link mutableCopy];
@@ -1955,6 +2114,7 @@ AssetPersistenceManager *assetPersistenceManager;
 -(void)executemydownloadtask{
 
     if(links.count>0) {
+        
     [self fetchPersistentKeyforAssetUrl:links[0]];
     
         [links removeObjectAtIndex:0];
@@ -1963,7 +2123,6 @@ AssetPersistenceManager *assetPersistenceManager;
         NSLog(@"executemydownloadtask called");
         
         //Setting up the config to allow only one download per progress
-        
         
         NSLog(@"we have %lu chapters in this book",downloadLinks.count);
         int downloadcount = downloadLinks.count;
@@ -1990,6 +2149,7 @@ AssetPersistenceManager *assetPersistenceManager;
 -(void)startDownload:(NSString*) link{
     
    
+   
     AVURLAsset *hlsAsset = [AVURLAsset assetWithURL:[NSURL URLWithString:link]];
         AVAssetDownloadTask *downloadTask = [assetDownloadURLSession assetDownloadTaskWithURLAsset:hlsAsset assetTitle:link assetArtworkData:nil options:@{AVAssetDownloadTaskMinimumRequiredMediaBitrateKey: @265000}];
         [downloadTask resume];
@@ -2013,26 +2173,86 @@ AssetPersistenceManager *assetPersistenceManager;
 }
 
 
+/*
+Connectivity testing code pulled from Apple's Reachability Example: https://developer.apple.com/library/content/samplecode/Reachability
+ */
+-(BOOL)hasConnectivity {
+    struct sockaddr_in zeroAddress;
+    bzero(&zeroAddress, sizeof(zeroAddress));
+    zeroAddress.sin_len = sizeof(zeroAddress);
+    zeroAddress.sin_family = AF_INET;
+
+    SCNetworkReachabilityRef reachability = SCNetworkReachabilityCreateWithAddress(kCFAllocatorDefault, (const struct sockaddr*)&zeroAddress);
+    if (reachability != NULL) {
+        //NetworkStatus retVal = NotReachable;
+        SCNetworkReachabilityFlags flags;
+        if (SCNetworkReachabilityGetFlags(reachability, &flags)) {
+            if ((flags & kSCNetworkReachabilityFlagsReachable) == 0)
+            {
+                // If target host is not reachable
+                return NO;
+            }
+
+            if ((flags & kSCNetworkReachabilityFlagsConnectionRequired) == 0)
+            {
+                // If target host is reachable and no connection is required
+                //  then we'll assume (for now) that your on Wi-Fi
+                return YES;
+            }
+
+
+            if ((((flags & kSCNetworkReachabilityFlagsConnectionOnDemand ) != 0) ||
+                 (flags & kSCNetworkReachabilityFlagsConnectionOnTraffic) != 0))
+            {
+                // ... and the connection is on-demand (or on-traffic) if the
+                //     calling application is using the CFSocketStream or higher APIs.
+
+                if ((flags & kSCNetworkReachabilityFlagsInterventionRequired) == 0)
+                {
+                    // ... and no [user] intervention is needed
+                    return YES;
+                }
+            }
+
+            if ((flags & kSCNetworkReachabilityFlagsIsWWAN) == kSCNetworkReachabilityFlagsIsWWAN)
+            {
+                // ... but WWAN connections are OK if the calling application
+                //     is using the CFNetwork (CFSocketStream?) APIs.
+                return YES;
+            }
+        }
+    }
+
+    return NO;
+}
+
 -(void)fetchPersistentKeyforAssetUrl:(NSString*) link{
     
-
-         NSURL *url = [NSURL URLWithString:link];
-        
-       
-             AVURLAsset *_asset = [[AVURLAsset alloc] initWithURL:url options:nil];
-             [_asset.resourceLoader setDelegate:self queue:dispatch_get_main_queue()];
-             _playerItem = [AVPlayerItem playerItemWithAsset:_asset];
-             _player = [AVPlayer playerWithPlayerItem:_playerItem];
-              // This will call the delegate
-          
-  
-
     
+    if([self hasConnectivity]){
+            NSLog(@"Device is connected to the Internet");
+            NSURL *url = [NSURL URLWithString:link];
+            originalLink = link;
+            AVURLAsset *_asset = [[AVURLAsset alloc] initWithURL:url options:nil];
+            [_asset.resourceLoader setDelegate:self queue:dispatch_get_main_queue()];
+            _playerItem = [AVPlayerItem playerItemWithAsset:_asset];
+            _player = [AVPlayer playerWithPlayerItem:_playerItem];
+             // This will call the delegate
+    }else{
+            NSLog(@"Device is not connected to the Internet");
+            [self DispatchDownloadError];
+    }
+ 
+    
+       
+          
+
 }
 
 
 
 
+ 
 
 //Get the next media Selection to download
 - (NSDictionary *)nextMediaSelection:(AVURLAsset *)asset{
@@ -2061,6 +2281,7 @@ AssetPersistenceManager *assetPersistenceManager;
 
 
 -(void) CancelCurrentDownloads{
+    _downloadorplay = 0;
     [assetDownloadURLSession invalidateAndCancel];
     [self DispatchDownloadError];
 
@@ -2074,14 +2295,13 @@ AssetPersistenceManager *assetPersistenceManager;
     NSLog(@"didCompleteWithError");
    
     if (error){
-        
         [task cancel];
         if(task.URLAsset.URL.absoluteString){
         NSMutableArray *temporary = [[NSMutableArray alloc] init];
         NSLog(@"Deleteing temporary %@",task.URLAsset.URL.absoluteString);
         [temporary addObject:task.URLAsset.URL.absoluteString];
         NSArray *array = [temporary copy];
-        [self deleteBook:array];
+        [self deleteTemporaryBook:array accountid:accountId];
         [self DispatchDownloadError];
         }
 //           switch (error.code) {
@@ -2161,9 +2381,20 @@ AssetPersistenceManager *assetPersistenceManager;
     
     //Save the location of each file with the link key
     NSString *valueToSave = location.absoluteString;
+    
+    NSLog(@"saving the downloaded asset in %@",location.absoluteString);
     [[NSUserDefaults standardUserDefaults] setObject:valueToSave forKey:assetDownloadTask.URLAsset.URL.absoluteString];
+    
     [[NSUserDefaults standardUserDefaults] synchronize];
     
+    BOOL exists = [[NSFileManager defaultManager] fileExistsAtPath:location.absoluteString];
+    if(exists){
+        NSLog(@"file exists at the path ");
+    }else{
+        NSLog(@"file doesnt' exist");
+    }
+ 
+   
     if(downloadedTask==downloadLinks.count){
         downloadedTask = 0;
         downloadLinks = 0;
@@ -2243,14 +2474,36 @@ AssetPersistenceManager *assetPersistenceManager;
             NSURL *assetURL = [NSURL URLWithString:savedValue];
  
             if (assetURL.isFileURL) {   // local
-              
+                
+                NSString* HexedAssetId;
+                HexedAssetId = [chapter stringByAppendingString:@"-"];
+                //assetId = [HexedAssetId stringByAppendingString:accountId];
+                NSString *valueToSave = [HexedAssetId stringByAppendingString:accountId];
+                NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+                NSString* assetId = [defaults valueForKey:valueToSave];
+                NSLog(@"getting original link ===== %@",valueToSave);
+                NSLog(@"assetId SKD link ===== %@",assetId);
+ 
+                NSLog(@"loading key for ==== %@",assetId);
+               
+                NSLog(@"loading key for account id ==== %@",accountId);
+                
+                    if([self loadPersistentContentKeyForAsset:assetId accountid:accountId  error:nil]){
+                        
+                        NSLog(@"the asset have keys");
+                    
+    
                 [downloadLinks removeObject:chapter];
+                        
+                    }else{
+                        NSLog(@"the asset does not have keys");
+                    }
                 NSLog(@"the asset for chapter %@ already exists and playable, skipping ",chapter);
                 
                 if(downloadLinks.count == 0){
-                    
+                    NSLog(@"we are all good , dispatching finished downloading book to react");
                     //Informing the UI that we don't have any books to download , so just skip it
-                    [_eventDispatcher sendAppEventWithName:@"onDownloadEnd" body: [NSNumber numberWithInt:AllDownloadLinks]];
+                    [_eventDispatcher sendAppEventWithName:@"onDownloadEnd" body: [NSNumber numberWithInt:AllDownloadLinks.count]];
                 }
                 
                 
@@ -2341,20 +2594,332 @@ didCancelLoadingRequest:(AVAssetResourceLoadingRequest *)loadingRequest {
 }
 
 
+- (void)deleteTemporaryBook:(NSArray *)assetLink accountid:(NSString *)accountid {
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSError *error = nil;
+    
+    NSLog(@"removing the keys and assets for the selected book ");
+    NSMutableArray *bookLinks = [assetLink mutableCopy];
+    
+    if(bookLinks){
+        
+    
+    for(id link in bookLinks) {
+    @try {
+        
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        NSMutableArray *arr1  = [NSMutableArray arrayWithArray:[defaults arrayForKey:@"Downloaders"]];
+        NSString* libraryDirstring = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject];
+        NSURL *libraryDir = [NSURL URLWithString:libraryDirstring];
+   
+        
+        libraryDir = [libraryDir URLByAppendingPathComponent:@"SwannKeyStore" isDirectory:YES];
 
+        libraryDirstring = libraryDir.absoluteString;
+      
+        NSError *error = nil;
+        NSLog(@"libraryDir.absoluteString ==== %@",libraryDirstring);
+        
+        NSArray *desktopFiles = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:libraryDirstring error:&error];
 
+        if(desktopFiles == nil){
+           NSLog(@"desktop files error ==== %@", [error localizedDescription]);
+        
+        }else{
+            NSLog(@"desktopFiles ==== %@",desktopFiles);
+        }
+       
+  
+                    NSLog(@"link ==== %@",link);
+
+                    
+                    
+                    NSString *localFileLocation = [defaults valueForKey:link];
+                
+                    if (localFileLocation) {
+                        //Removing the Asset
+                        
+                        
+                        NSLog(@"deleting asset for %@",link);
+                        [[NSFileManager defaultManager] removeItemAtPath:localFileLocation error:&error];
+                        [defaults removeObjectForKey:link];
+                    }
+                    _downloadorplay = 3;
+                    accountId = accountid;
+                    
+                         NSURL *url = [NSURL URLWithString:link];
+                        
+    
+                             AVURLAsset *_asset = [[AVURLAsset alloc] initWithURL:url options:nil];
+          
+                    
+
+                        dispatch_queue_t queue = dispatch_queue_create("com.icapps.fairplay.queue", nil);
+                        [_asset.resourceLoader setDelegate:self queue:queue];
+
+                    
+                             _playerItem = [AVPlayerItem playerItemWithAsset:_asset];
+                             _player = [AVPlayer playerWithPlayerItem:_playerItem];
+                              // This will call the delegate
+                          
+                
+              
+        
+        
+        
+           
+           
+     
+    }
+   
+    @catch (NSException *exception) {
+        NSLog(@"An error occured deleting the file: %@\n%@", exception, error.localizedDescription);
+    }
+    }
+    }else{
+        NSLog(@"the book requested might be null");
+    }
+}
+
+-(void)BookAssetUsageVerification:(NSString*) link originalLink:(NSString *)original{
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSMutableArray *arr1  = [NSMutableArray arrayWithArray:[defaults arrayForKey:@"Downloaders"]];
+    NSString* libraryDirstring = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject];
+    NSURL *libraryDir = [NSURL URLWithString:libraryDirstring];
+    int NokeysCounter = 0;
+    
+    libraryDir = [libraryDir URLByAppendingPathComponent:@"SwannKeyStore" isDirectory:YES];
+
+    libraryDirstring = libraryDir.absoluteString;
+  
+    NSError *error = nil;
+    NSLog(@"libraryDir.absoluteString ==== %@",libraryDirstring);
+    
+    NSArray *desktopFiles = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:libraryDirstring error:&error];
+
+    if(desktopFiles == nil){
+       NSLog(@"desktop files error ==== %@", [error localizedDescription]);
+    
+    }else{
+        NSLog(@"desktopFiles ==== %@",desktopFiles);
+    }
+   
+            for(id account in arr1) {
+                NSLog(@"link ==== %@",link);
+
+            
+            
+                if(![self loadPersistentContentKeyForAsset:link accountid:account  error:nil]){
+                        NokeysCounter++;
+                }
+            }
+            NSLog(@"NokeysCounter === %d",NokeysCounter);
+            NSLog(@"arr1 === %@" ,arr1);
+    
+    
+    if(NokeysCounter==arr1.count){
+        NSString *localFileLocation = [defaults valueForKey:original];
+        NSLog(@"localFileLocation ==== %@",localFileLocation);
+        
+        if (localFileLocation) {
+            //Removing the Asset
+           
+    
+      
+            [[NSFileManager defaultManager] removeItemAtPath:localFileLocation error:&error];
+            [defaults removeObjectForKey:original];
+            [[NSUserDefaults standardUserDefaults] synchronize];
+            if(!error){
+                NSLog(@"Deleted the downloaded book ");
+            }else{
+                NSLog(@"Failed to download book  ==== %@", [error localizedDescription]);
+       
+            }
+            NSLog(@"download book error msg ==== %@", [error localizedDescription]);
+        }
+       
+    }else{
+        NSLog(@"no need to delete asset , an account is using it");
+    }
+ 
+            
+}
+
+-(void)AssetUsageVerification:(NSString*) link {
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSMutableArray *arr1  = [NSMutableArray arrayWithArray:[defaults arrayForKey:@"Downloaders"]];
+    NSString* libraryDirstring = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject];
+    NSURL *libraryDir = [NSURL URLWithString:libraryDirstring];
+    int NokeysCounter = 0;
+    
+    libraryDir = [libraryDir URLByAppendingPathComponent:@"SwannKeyStore" isDirectory:YES];
+
+    libraryDirstring = libraryDir.absoluteString;
+  
+    NSError *error = nil;
+    NSLog(@"libraryDir.absoluteString ==== %@",libraryDirstring);
+    
+    NSArray *desktopFiles = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:libraryDirstring error:&error];
+
+    if(desktopFiles == nil){
+       NSLog(@"desktop files error ==== %@", [error localizedDescription]);
+    
+    }else{
+        NSLog(@"desktopFiles ==== %@",desktopFiles);
+    }
+   
+            for(id account in arr1) {
+                NSLog(@"link ==== %@",link);
+
+            
+            
+                if(![self loadPersistentContentKeyForAsset:link accountid:account  error:nil]){
+                        NokeysCounter++;
+                }
+            }
+            NSLog(@"NokeysCounter === %d",NokeysCounter);
+            NSLog(@"arr1 === %@" ,arr1);
+    
+    
+    if(NokeysCounter==arr1.count){
+        NSString *localFileLocation = [defaults valueForKey:bookLinks[_DeleteListIndex]];
+        NSLog(@"localFileLocation ==== %@",localFileLocation);
+        
+        if (localFileLocation) {
+            //Removing the Asset
+            NSLog(@"deleting asset for %@",link);
+            [[NSFileManager defaultManager] removeItemAtPath:localFileLocation error:&error];
+            [defaults removeObjectForKey:link];
+        }
+       
+    }else{
+        NSLog(@"no need to delete asset , an account is using it");
+    }
+    if(bookLinks.count == _DeleteListIndex){
+        _DeleteListIndex = 0;
+    }else{
+        _DeleteListIndex++;
+    }
+    
+            
+}
 - (BOOL)loadingRequestHandling:(AVAssetResourceLoadingRequest *)loadingRequest asset:(NSString*)assetId {
     if (self->_requestingCertificate) {
         return YES;
     } else if (self->_requestingCertificateErrored) {
         return NO;
     }
- 
+    
+    NSString* HexedAssetId;
+    HexedAssetId = [originalLink stringByAppendingString:@"-"];
+    //assetId = [HexedAssetId stringByAppendingString:accountId];
+    NSString *valueToSave = [HexedAssetId stringByAppendingString:accountId];
+    [[NSUserDefaults standardUserDefaults] setObject:assetId forKey:valueToSave];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    
+    NSLog(@"setting original link ===== %@",valueToSave);
+    NSLog(@"setting assetId SKD link ===== %@",assetId);
     
     NSLog(_downloadorplay ? @"Hi Im going to play" : @"Hi Im going to download");
     NSLog(isDownloading ? @"Hi Im going to download" : @"Hi Im Sorry Im  already downloading");
     
-    if((!_downloadorplay) && (!isDownloading)){
+    if(_downloadorplay==3){
+        
+        NSLog(@"deleting temporary files");
+        
+        
+        NSURL* url = [self contentKeyLocationForAsset:assetId accountId:accountId error:nil];
+        
+        
+  
+      //  NSURL* keyStoreDir = [libraryDir URLByAppendingPathComponent:@"SwannKeyStore" isDirectory:YES];
+  //      NSURL*  keyStoreDir = [libraryDir URLByAppendingPathComponent:assetId isDirectory:YES];
+       //  keyStoreDir = [keyStoreDir URLByAppendingPathComponent:myLink isDirectory:YES];
+      
+        
+        NSLog(@"removing key for url === %@",url);
+    //    NSLog(@"removing Directory for url === %@",keyStoreDir);
+        
+        BOOL success = [[NSFileManager defaultManager] removeItemAtURL:url error:nil];
+        if(success){
+            NSLog(@"deleted the url %@",url);
+        }else{
+            NSLog(@"failed to delete the folder %@ ",url);
+        }
+        
+    }
+    else
+    if(_downloadorplay==2){
+        NSLog(@"Deleting asset from here");
+        
+        _player  = nil;
+        
+        
+        NSError *error = nil;
+        
+        //Removing the Key
+        
+        
+       
+        NSLog(@"account ID === %@",accountId);
+  
+        NSString *assetIDString = assetId;
+       
+       
+ 
+        
+        NSURL* url = [self contentKeyLocationForAsset:assetIDString accountId:accountId error:&error];
+        
+        
+  
+      //  NSURL* keyStoreDir = [libraryDir URLByAppendingPathComponent:@"SwannKeyStore" isDirectory:YES];
+  //      NSURL*  keyStoreDir = [libraryDir URLByAppendingPathComponent:assetId isDirectory:YES];
+       //  keyStoreDir = [keyStoreDir URLByAppendingPathComponent:myLink isDirectory:YES];
+      
+        
+        NSLog(@"removing key for url === %@",url);
+    //    NSLog(@"removing Directory for url === %@",keyStoreDir);
+        
+        BOOL success = [[NSFileManager defaultManager] removeItemAtURL:url error:&error];
+        if(success){
+            NSLog(@"deleted the url %@",url);
+        }else{
+            NSLog(@"failed to delete the folder %@ ",url);
+        }
+        
+     
+     
+    
+            if(error){
+                NSLog(@"error removing key ==== %@",error);
+            }
+        
+       
+            
+      
+      
+       // [self AssetUsageVerification:assetIDString];
+//        for(id account in arr1) {
+//
+//                NSString *keyAssetID = [link stringByAppendingString:account];
+//            NSURL* url = [self contentKeyLocationForAsset:keyAssetID accountId:account error:&error];
+//            NSLog(@"url === %@",url);
+//                if(!url){
+//                    NokeysCounter++;
+//                }
+//
+//        }
+//        NSLog(@"NokeysCounter === %d",NokeysCounter);
+//        NSLog(@"arr1 === %@" ,arr1);
+//
+        
+        
+   
+        
+    
+        
+    }
+    if((_downloadorplay==0) && (!isDownloading)){
         NSLog(@"Downloading");
     //    isDownloading = TRUE;
     
@@ -2376,11 +2941,15 @@ didCancelLoadingRequest:(AVAssetResourceLoadingRequest *)loadingRequest {
     
             NSString *certificateStringUrl = (NSString *)[self->_drm objectForKey:@"certificateUrl"];
             
-        asset.resourceLoader.preloadsEligibleContentKeys = YES;
+        if (@available(iOS 9.0, *)) {
+            asset.resourceLoader.preloadsEligibleContentKeys = YES;
+        } else {
+            // Fallback on earlier versions
+        }
         
         [contentKeyDelegate setCertificateUrl:certificateStringUrl];
         [contentKeyDelegate setUrl:loadingRequest.request.URL.absoluteString];
-        
+        [contentKeyDelegate setAccountID:accountId];
         [contentKeyDelegate setRCTvideo:self];
         [contentKey addDelegate:contentKeyDelegate];
         [contentKey addAsset:asset];
@@ -2392,7 +2961,7 @@ didCancelLoadingRequest:(AVAssetResourceLoadingRequest *)loadingRequest {
     //
        
         
-    }else if ((_downloadorplay) ){
+    }else if ((_downloadorplay==1) ){
         
   
         NSLog(@"Playing");
@@ -2413,9 +2982,16 @@ didCancelLoadingRequest:(AVAssetResourceLoadingRequest *)loadingRequest {
             NSString *certificateStringUrl = (NSString *)[self->_drm objectForKey:@"certificateUrl"];
             
             NSLog(@"entered fairplay %@",url.host);
+      
+                
             
-           
-            NSData* persistentKey = [self loadPersistentContentKeyForAsset:url.absoluteString error:nil];
+       
+            NSLog(@"account ID === %@",accountId);
+    
+            NSString *assetIDString = [[NSURL alloc] initWithString:url.absoluteString ].absoluteString;
+            NSData* persistentKey = [self loadPersistentContentKeyForAsset:assetIDString accountid:accountId error:nil];
+            
+            
          
             if(persistentKey){
                 
@@ -2458,6 +3034,7 @@ didCancelLoadingRequest:(AVAssetResourceLoadingRequest *)loadingRequest {
                         if (dataRequest != nil) {
                             NSError *spcError = nil;
                             NSData *spcData = [loadingRequest streamingContentKeyRequestDataForApp:certificateData contentIdentifier:contentIdData options:nil error:&spcError];
+                            
                             
                             
                             // Request CKC to the server
