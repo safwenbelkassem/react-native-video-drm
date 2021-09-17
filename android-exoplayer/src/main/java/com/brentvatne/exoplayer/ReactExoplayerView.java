@@ -82,8 +82,12 @@ import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.util.EventLogger;
 import com.google.android.exoplayer2.util.Util;
 import com.google.common.base.Charsets;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -630,8 +634,25 @@ class ReactExoplayerView extends FrameLayout implements
 
     private void sendPlayedBacktimetoApi() {
 
-        AndroidNetworking.post("https://swann.k8s.satoripop.io/api/v1/chapter/" + currentchapterId + "/read")
-                .addBodyParameter("time", String.valueOf(getTotalPlayedTime()))
+        JSONObject jsonObject = new JSONObject();
+        JSONObject jsonObjectBody = new JSONObject();
+        JSONArray array=new JSONArray();
+        Log.d(TAG, "getTotalPlayedTime: " + getTotalPlayedTime());
+        int valuePlayed = (int)  getTotalPlayedTime();
+
+        try {
+            jsonObject.put("chapter_id", currentchapterId);
+            jsonObject.put("time", valuePlayed);
+            array.put(jsonObject);
+            jsonObjectBody.put("reads", array);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
+
+        AndroidNetworking.post("https://swann.k8s.satoripop.io/api/v1/chapters/read")
+                .addJSONObjectBody(jsonObjectBody)
                 .addHeaders("Authorization", token)
                 .setTag("sendChapterData")
                 .setPriority(Priority.MEDIUM)
