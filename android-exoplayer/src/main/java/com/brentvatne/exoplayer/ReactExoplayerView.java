@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.MutableLiveData;
 
 import com.androidnetworking.AndroidNetworking;
@@ -27,6 +28,7 @@ import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.brentvatne.react.R;
 import com.brentvatne.receiver.AudioBecomingNoisyReceiver;
 import com.brentvatne.receiver.BecomingNoisyListener;
+import com.facebook.react.ReactActivity;
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Dynamic;
 import com.facebook.react.bridge.LifecycleEventListener;
@@ -79,39 +81,55 @@ import com.google.android.exoplayer2.upstream.DefaultAllocator;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.util.EventLogger;
 import com.google.android.exoplayer2.util.Util;
+import com.google.common.base.Charsets;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.net.CookieHandler;
 import java.net.CookieManager;
 import java.net.CookiePolicy;
+import java.net.URI;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 import static android.content.Context.MODE_PRIVATE;
+import static android.drm.DrmInfoRequest.ACCOUNT_ID;
+import static com.brentvatne.exoplayer.DownloadTracker.fetchingKeys;
+import static com.google.android.exoplayer2.offline.DownloadManager.canceled;
 import static com.google.android.exoplayer2.util.Assertions.checkNotNull;
 
 @SuppressLint("ViewConstructor")
 class ReactExoplayerView extends FrameLayout implements
         LifecycleEventListener,
+
         BecomingNoisyListener,
         SimpleExoPlayer.EventListener,
         AnalyticsListener,
         BandwidthMeter.EventListener,
         DownloadTracker.Listener,
+
         MetadataOutput {
 
     private static final String TAG = "ReactExoplayerView";
     private static final CookieManager DEFAULT_COOKIE_MANAGER;
     private static final int SHOW_PROGRESS = 1;
+
 
     static {
         DEFAULT_COOKIE_MANAGER = new CookieManager();
@@ -119,24 +137,26 @@ class ReactExoplayerView extends FrameLayout implements
     }
 
     protected SimpleExoPlayer player;
+    private static final String PREF_NAME = "SharedPreferences_Swann";
 
     MediaSourceFactory mediaSourceFactory;
     private boolean useExtensionRenderers;
     PlaybackStatsListener playbackStatsListener;
     private DownloadTracker downloadTracker;
     private DataSource.Factory dataSourceFactory;
-    private List<MediaItem> mediaItems;
-    private List<String> links;
+    public static List<MediaItem> mediaItems;
+
     private static int downloadingRN = 0;
     private float currentProgress = 0f;
 
-    private int linksSize;
+
     private DefaultTrackSelector.Parameters trackSelectorParameters;
     private DebugTextViewHelper debugViewHelper;
     private TrackGroupArray lastSeenTrackGroupArray;
-    float global = 0;
-    float current = 0;
-    int currentchapterId;
+    static float global = 0;
+    static float current = 0;
+    static  float previousvalue = 0;
+    static int currentchapterId;
     private boolean startAutoPlay;
     private int startWindow;
     private long startPosition;
@@ -147,8 +167,9 @@ class ReactExoplayerView extends FrameLayout implements
     private ExoPlayerView exoPlayerView;
     private DefaultTrackSelector trackSelector;
     private boolean playerNeedsSource;
-
+    private static String ACCOUNT_ID;
     private int resumeWindow;
+    static int DownloadedChapters = 0;
     private long resumePosition;
     private boolean loadVideoStarted;
     private boolean isFullscreen;
@@ -170,9 +191,12 @@ class ReactExoplayerView extends FrameLayout implements
     private AdsLoader adsLoader;
     private Uri loadedAdTagUri;
 
-
+    public  static ArrayList<String>  links =new ArrayList<>();;
+    public  static ArrayList<String> originallinks = new ArrayList<>();
+    public static int linksSize;
     // Props from React
-    private Uri srcUri;
+    public static Uri srcUri;
+
     private String extension;
     private boolean repeat;
     private String audioTrackType;
@@ -203,8 +227,9 @@ class ReactExoplayerView extends FrameLayout implements
     private int bufferForPlaybackMs = DefaultLoadControl.DEFAULT_BUFFER_FOR_PLAYBACK_MS;
     private int bufferForPlaybackAfterRebufferMs = DefaultLoadControl.DEFAULT_BUFFER_FOR_PLAYBACK_AFTER_REBUFFER_MS;
 
+
     // React
-    private final ThemedReactContext themedReactContext;
+    private static  ThemedReactContext themedReactContext;
     private final AudioBecomingNoisyReceiver audioBecomingNoisyReceiver;
     private final Handler progressHandler = new Handler() {
         @Override
@@ -237,6 +262,96 @@ class ReactExoplayerView extends FrameLayout implements
         SharedPreferences.Editor editor = getContext().getSharedPreferences("globaldata", MODE_PRIVATE).edit();
         editor.putLong("totalPlayTimeMs", totalPlayTimeMs);
         editor.apply();
+    }
+
+
+    public static Set<String> getAccounts(Context ctx) {
+        SharedPreferences prefs = ctx.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        Set<String> set = prefs.getStringSet("Accounts", null);
+
+        if (set != null) {
+
+            return set;
+        }
+        return null;
+    }
+
+
+
+
+    public static void setDownloadState(int state){
+
+
+        SharedPreferences prefs = themedReactContext.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor e = prefs.edit();
+        Log.d(TAG, "setDownloadState: "+state);
+    e.putInt("DownloadState",state);
+    e.apply();
+
+
+
+    }
+
+    public void getDownloadState(){
+
+        SharedPreferences prefs = themedReactContext.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        Log.d(TAG, "getDownloadState: "+prefs.getInt("DownloadState", 0));
+        this.themedReactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit("onDownloadState", prefs.getInt("DownloadState", 0));
+        eventEmitter.setDownloadState( prefs.getInt("DownloadState", 0));
+    }
+
+
+    public static void setAccounts(Context ctx, String accountid) {
+
+        SharedPreferences prefs = ctx.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor e = prefs.edit();
+
+        //Set the values
+        Set<String> set = new HashSet<String>();
+        Set<String> accounts = getAccounts(ctx);
+        if(accounts!=null){
+            set.addAll(accounts);
+        }
+
+        if(!set.contains(accountid)){
+        set.add(accountid);
+        e.putStringSet("Accounts", set);
+        e.commit();
+        }
+
+    }
+
+
+    public static byte[] getBytes(String src) {
+        SharedPreferences prefs = themedReactContext.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        Log.d(TAG, "getBytes: srcuri :"+src);
+        Log.d(TAG, "getBytes: ACCOUNT_ID :"+ACCOUNT_ID);
+
+        String str = prefs.getString(src+ACCOUNT_ID, null);
+
+        if (str != null) {
+            Log.d(TAG, "setBytes: data "+ Arrays.toString(str.getBytes(Charsets.ISO_8859_1)));
+            return str.getBytes(Charsets.ISO_8859_1);
+        }
+        return null;
+    }
+
+
+    public static void removeBytes(String src) {
+        SharedPreferences prefs = themedReactContext.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor e = prefs.edit();
+        e.remove(src+ACCOUNT_ID);
+        e.commit();
+    }
+
+    public static void setBytes(String src, byte[] bytes) {
+        Log.d(TAG, "setBytes: srcuri :"+src);
+        Log.d(TAG, "setBytes: ACCOUNT_ID :"+ACCOUNT_ID);
+        SharedPreferences prefs = themedReactContext.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor e = prefs.edit();
+        Log.d(TAG, "setBytes: data "+ Arrays.toString(bytes));
+        e.putString(src+ACCOUNT_ID, new String(bytes, Charsets.ISO_8859_1));
+        e.apply();
     }
 
     private double getTotalPlayedTime() {
@@ -309,6 +424,7 @@ class ReactExoplayerView extends FrameLayout implements
         super.onAttachedToWindow();
         sendPlayedBacktimetoApi();
         Log.d(TAG, "onAttachedToWindow: ");
+        themedReactContext.addLifecycleEventListener(this);
         initializePlayer();
     }
 
@@ -319,6 +435,9 @@ class ReactExoplayerView extends FrameLayout implements
          * Leave this here in case it causes issues.
          */
         // stopPlayback();
+        Log.d(TAG, "onHostpause: fetchingkeys==="+fetchingKeys);
+
+
     }
 
     // LifecycleEventListener implementation
@@ -340,7 +459,11 @@ class ReactExoplayerView extends FrameLayout implements
     @Override
     public void onHostPause() {
         isInBackground = true;
-        if (playInBackground) {
+        Log.d(TAG, "onHostpause: fetchingkeys==="+fetchingKeys);
+        if(fetchingKeys) {
+            setDownloadState(-1);
+        }
+            if (playInBackground) {
             return;
         }
         setPlayWhenReady(false);
@@ -348,15 +471,18 @@ class ReactExoplayerView extends FrameLayout implements
 
     @Override
     public void onHostDestroy() {
+        Log.d(TAG, "onHostDestroy: fetchingkeys==="+fetchingKeys);
 //        Log.d(TAG, "onHostDestroy: ");
 //        SharedPreferences.Editor editor = getContext().getSharedPreferences("globaldata", MODE_PRIVATE).edit();
 //        editor.putInt("total", total);
 //        editor.putInt("downloaded", downloaded);
 //        editor.putInt("downloadingRN", downloadingRN);
 //        editor.apply();
+
+
         stopPlayback();
         sendPlayedBacktimetoApi();
-//        downloadTracker.removeListener(this);
+     //   downloadTracker.removeListener(this);
     }
 
     public void cleanUpResources() {
@@ -420,6 +546,7 @@ class ReactExoplayerView extends FrameLayout implements
                     //  debugViewHelper.start();
 
                 }
+
                 if (playerNeedsSource && srcUri != null) {
                     exoPlayerView.invalidateAspectRatio();
                     mediaSourceFactory = new DefaultMediaSourceFactory(dataSourceFactory)
@@ -438,7 +565,7 @@ class ReactExoplayerView extends FrameLayout implements
                     player.setMediaSource(mediaSourceFactory.createMediaSource(mediaItems.get(0)), true);
                     //player.setMediaItems(mediaItems, /* resetPosition= */ !haveResumePosition);
                     player.prepare();
-//                    Log.d(TAG, "Current Keysetid : "+new String(mediaItems.get(0).playbackProperties.drmConfiguration.getKeySetId()));
+                    Log.d(TAG, "Current URI  : "+mediaItems.get(0).playbackProperties.uri);
                 }
                 applyModifiers();
             }
@@ -507,8 +634,25 @@ class ReactExoplayerView extends FrameLayout implements
 
     private void sendPlayedBacktimetoApi() {
 
-        AndroidNetworking.post("https://swann.k8s.satoripop.io/api/v1/chapter/" + currentchapterId + "/read")
-                .addBodyParameter("time", String.valueOf(getTotalPlayedTime()))
+        JSONObject jsonObject = new JSONObject();
+        JSONObject jsonObjectBody = new JSONObject();
+        JSONArray array=new JSONArray();
+        Log.d(TAG, "getTotalPlayedTime: " + getTotalPlayedTime());
+        int valuePlayed = (int)  getTotalPlayedTime();
+
+        try {
+            jsonObject.put("chapter_id", currentchapterId);
+            jsonObject.put("time", valuePlayed);
+            array.put(jsonObject);
+            jsonObjectBody.put("reads", array);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
+
+        AndroidNetworking.post("https://swann.k8s.satoripop.io/api/v1/chapters/read")
+                .addJSONObjectBody(jsonObjectBody)
                 .addHeaders("Authorization", token)
                 .setTag("sendChapterData")
                 .setPriority(Priority.MEDIUM)
@@ -581,36 +725,59 @@ class ReactExoplayerView extends FrameLayout implements
         eventEmitter.audioBecomingNoisy();
     }
 
+
+
     @Override
     public void onDownloadsChanged(Download download) {
-        Log.i("onDownloadsChanged ",  ""+download.getPercentDownloaded());
-        if (Download.STATE_COMPLETED == download.state || Download.STATE_FAILED == download.state) {
-            if(Download.STATE_COMPLETED == download.state && downloadingRN >= 0) {
-                Log.i("downloadingRN--","" +  download.getPercentDownloaded());
-            }
-            if(downloadingRN == 0){
-                WritableMap payload = Arguments.createMap();
-                payload.putDouble("downloadState", download.state);
-                payload.putDouble("chapterDownloaded", downloadingRN);
-                this.themedReactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit("onDownload", payload);
-                Log.d(TAG, "downloadState:  " + download.state);
-                Log.d(TAG, "links:  " + links + "downloadingRN" + downloadingRN);
-                eventEmitter.setDownloadState(download.state);
-                currentProgress = 0;
-                downloaded = 0;
-                total = 0;
-            }
-        }
-        else{
-            WritableMap payload = Arguments.createMap();
-            payload.putDouble("downloadState", download.state);
-            payload.putDouble("chapterDownloaded", downloadingRN);
-            this.themedReactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit("onDownload", payload);
-            Log.d(TAG, "downloadState:  " + download.state);
-            Log.d(TAG, "links:  " + links + "downloadingRN" + downloadingRN);
-            eventEmitter.setDownloadState(download.state);
-        }
+
+
+
+//            if (Download.STATE == download.state) {
+//                Log.i("onDownloadsChanged : downloaded chapters ",  ""+ DownloadedChapters);
+//                DownloadedChapters++;
+//                if (DownloadedChapters == linksSize) {
+//                    dispatchSuccessEventtoRN();
+//                }
+//
+//
+
+//
+//        if (Download.STATE_COMPLETED == download.state || Download.STATE_FAILED == download.state) {
+//
+//            if(Download.STATE_COMPLETED == download.state && downloadingRN >= 0) {
+//                Log.i("downloadingRN--","" +  download.getPercentDownloaded());
+//            }
+//            if(downloadingRN == 0){
+//                WritableMap payload = Arguments.createMap();
+//                payload.putDouble("downloadState", download.state);
+//                payload.putDouble("chapterDownloaded", downloadingRN);
+//                this.themedReactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit("onDownload", payload);
+//                Log.d(TAG, "downloadState:  " + download.state);
+//                Log.d(TAG, "links:  " + links + "downloadingRN" + downloadingRN);
+//                eventEmitter.setDownloadState(download.state);
+//                currentProgress = 0;
+//                downloaded = 0;
+//                total = 0;
+//            }
+//        }
+//        else{
+//            WritableMap payload = Arguments.createMap();
+//            payload.putDouble("downloadState", download.state);
+//            payload.putDouble("chapterDownloaded", downloadingRN);
+//            this.themedReactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit("onDownload", payload);
+//            Log.d(TAG, "downloadState:  " + download.state);
+//            Log.d(TAG, "links:  " + links + "downloadingRN" + downloadingRN);
+//            eventEmitter.setDownloadState(download.state);
+//        }
+
+
     }
+
+    @Override
+    public void onDownloadRemoved(Download state) {
+
+    }
+
 
     static volatile int downloaded = 0;
 
@@ -622,32 +789,49 @@ class ReactExoplayerView extends FrameLayout implements
         p.putDouble("progress", -1);
         p.putDouble("chapter", -1);
         this.themedReactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit("onProgress", p);
+        setDownloadState(-1);
+
     }
+
+
+
 
     @Override
     public void onProgressChanged(float download) {
-        Log.i("onProgressChanged ", download + "");
-        if(total > 0 && downloadingRN > -1){
-            Log.d(TAG, "Data : downloadingRN :  " + downloadingRN + ",  total : " + total + ",  downloadTracker.loadallDownloads().size() : " + downloadTracker.loadallDownloads().size() + " currentProgress : " + currentProgress );
-            currentProgress = downloaded +  (download / total) ;
-            Log.d(TAG, "Data : currentProgress :  " + currentProgress);
+       // current = download - current;
+
+
+        Log.d(TAG, "onProgressChanged: download "+download);
+        Log.d(TAG, "onProgressChanged: previousvalue "+previousvalue);
+
+     if(download!=0){
+         global = global + (download - previousvalue) ;
+         current = global /(linksSize*100)*100;
+     }
+        previousvalue = download;
+        Log.d(TAG, "onProgressChanged: current "+current);
+        Log.d(TAG, "onProgressChanged: global "+global);
+        Log.d(TAG, "onProgressChanged: linksSize "+linksSize);
+        Log.d(TAG, "onProgressChanged: DownloadedChapters "+DownloadedChapters);
+
+
+        Log.i("onProgressChanged ", download + " Download State: ");
+
             WritableMap payload = Arguments.createMap();
-            payload.putDouble("progress", currentProgress);
-            payload.putDouble("chapter", downloadingRN);
-            this.themedReactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit("onProgress", payload);
-            if(download == 100){
-                downloadingRN--;
-                downloaded += 100 / total;
-                if(downloadingRN == 0) {
-                    total = 0;
-                    downloadingRN = 0;
-                    WritableMap p = Arguments.createMap();
-                    p.putDouble("progress", 100);
-                    p.putDouble("chapter", 0);
-                    this.themedReactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit("onProgress", p);
-                }
+            payload.putDouble("progress", current);
+            payload.putDouble("chapter", DownloadedChapters);
+
+            if(current >=99.98){
+
+                dispatchSuccessEventtoRN();
             }
-        }
+
+if(!canceled){
+
+
+            this.themedReactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit("onProgress", payload);
+}
+
     }
 
     public void Timer(Download download) {
@@ -682,6 +866,7 @@ class ReactExoplayerView extends FrameLayout implements
         String text = "onStateChanged: playbackState=" + playbackState;
         switch (playbackState) {
             case Player.STATE_IDLE:
+                Log.d(TAG, "onPlaybackStateChanged:  "+fetchingKeys);
                 text += "idle";
                 eventEmitter.idle();
                 clearProgressMessageHandler();
@@ -848,32 +1033,91 @@ class ReactExoplayerView extends FrameLayout implements
 
     }
 
-    public void setDownload(String link) {
-        synchronized (this){
-            setUpMedia(Uri.parse(link));
-            boolean canDownload = getDownloadUnsupportedStringId() == 0;
-            Log.d(TAG, "canDownload: " + canDownload);
-            Log.d(TAG, "setDownload: " + mediaItems.get(0));
-            boolean isDownloaded = downloadTracker.isDownloaded(mediaItems.get(0));
-            Log.d(TAG, "isdownloaded:  " + isDownloaded);
-            // downloadTracker.licenseRenew(mediaItems.get(0));
-            if (!isDownloaded) {
+public void setLinks (ArrayList<String> link,String accountID){
+    canceled = false;
+    this.links = (ArrayList<String>) link.clone();
+    Log.d(TAG, "setLinks: setting UriList : "+links);
+
+    this.originallinks = (ArrayList<String>) link.clone();
+
+
+    this.linksSize = link.size();
+        this.ACCOUNT_ID = accountID;
+            current = 0;
+         global = 0;
+         this.DownloadedChapters = 0;
+
+
+        setDownload();
+}
+
+    public  void setDownload() {
+            if(links.size()>0){
+             startDownload(links.get(0),ACCOUNT_ID);
+             links.remove(0);
+            }
+    }
+
+    private void startDownload(String link,String accountID) {
+
+total = 0;
+            ACCOUNT_ID = accountID;
+            setAccounts(getContext(),accountID);
+           //   srcUri = Uri.parse(link);
+
+        fetchingKeys= true;
+
+
+
+
+
+
+                Log.d(TAG, "setUpMedia Download with empty key set id ");
+                setUpMedia(Uri.parse(link),null);
                 Log.d(TAG, "entering Download: total " + total);
                 downloadTracker.addListener(this);
+
                 onDownloadButtonClicked();
                 //     downloadTracker.licenseRenew(mediaItems.get(0));
-            }else{
-                WritableMap payload = Arguments.createMap();
-                payload.putDouble("downloadState", 3);
-                payload.putDouble("chapterDownloaded", downloadingRN);
-                this.themedReactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit("onDownload", payload);
-            }
-        }
+
+
+
 
     }
 
+    public static void dispatchFailEventtoRN() {
+        setDownloadState(-1);
+        fetchingKeys= false;
+        total = 0;
+        downloadingRN = 0;
+        WritableMap p = Arguments.createMap();
+        p.putDouble("progress", -1);
+        p.putDouble("chapter", -1);
+        themedReactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit("onProgress", p);
+        themedReactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit("onDownloadEnd", -1);
+    }
+
+    public static void dispatchSuccessEventtoRN(){
+        total = 0;
+        fetchingKeys= false;
+        downloadingRN = 0;
+        setDownloadState(1);
+       // WritableMap payload = Arguments.createMap();
+//        payload.putDouble("downloadState", 3);
+//        payload.putDouble("chapterDownloaded", downloadingRN);
+        WritableMap p = Arguments.createMap();
+        p.putDouble("progress", 100);
+
+        themedReactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit("onProgress", p);
+     //   themedReactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit("onDownload", payload);
+
+        themedReactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit("onDownloadEnd", linksSize);
+
+
+    }
 
     /*
+
     Download checking
 
      */
@@ -901,6 +1145,18 @@ class ReactExoplayerView extends FrameLayout implements
 EndDwnload checking
      */
 
+    public void cancelDownloads(){
+        canceled = true;
+        //downloadTracker.removeListener(this);
+        downloadTracker.cancelDownloads();
+//        WritableMap p = Arguments.createMap();
+//        p.putDouble("progress", -1);
+//        p.putDouble("chapter", -1);
+//        themedReactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit("onProgress", p);
+//       ;
+
+    }
+
 
     public void downloadSetup() {
         useExtensionRenderers = PlayerUtil.useExtensionRenderers();
@@ -920,7 +1176,7 @@ EndDwnload checking
                     .show();
         } else {
             RenderersFactory renderersFactory = PlayerUtil.buildRenderersFactory(/* context= */ themedReactContext, isNonNullAndChecked(preferExtensionDecodersMenuItem));
-            downloadTracker.toggleDownload(themedReactContext.getCurrentActivity().getFragmentManager(), mediaItems.get(0), renderersFactory);
+            downloadTracker.toggleDownload(themedReactContext.getCurrentActivity().getFragmentManager(), mediaItems.get(0), renderersFactory,this);
             total ++;
             downloadingRN++;
         }
@@ -1063,8 +1319,21 @@ EndDwnload checking
 
     }
 
+
+
     private List<MediaItem> createMediaItems() {
-        setUpMedia(srcUri);
+
+        byte[] accountdata = getBytes(srcUri.toString());
+        if(accountdata!=null){
+            //reading from saved keysetid
+            Log.d(TAG, "createMediaItems:reading from saved keysetid ");
+            setUpMedia(srcUri,accountdata);
+        }else{
+            Log.d(TAG, "createMediaItems:reading from remote keysetid ");
+            //reading from remote keysetid
+            setUpMedia(srcUri,null);
+        }
+
         boolean hasAds = false;
         for (int i = 0; i < mediaItems.size(); i++) {
             MediaItem mediaItem = mediaItems.get(i);
@@ -1144,11 +1413,12 @@ EndDwnload checking
     }
 
 
-    public void setSrc(final Uri uri, final String extension, Map<String, String> headers) {
+    public void setSrc(final Uri uri, final String extension, Map<String, String> headers,String accountid) {
 
         boolean isOriginalSourceNull = srcUri == null;
         boolean isSourceEqual = uri.equals(srcUri);
         Log.d(TAG, "setSrc: " + uri);
+        ACCOUNT_ID = accountid;
         this.srcUri = uri;
         this.extension = extension;
         this.requestHeaders = headers;
@@ -1168,7 +1438,7 @@ EndDwnload checking
     }
 
 
-    public void setUpMedia(Uri uri) {
+    public MediaItem setUpMedia(Uri uri,byte[] keysetid) {
         if (uri != null) {
 
             String title = uri.toString();
@@ -1214,16 +1484,23 @@ EndDwnload checking
                     .setMediaMetadata(new MediaMetadata.Builder().setTitle(title).build())
                     .setMimeType(adaptiveMimeType);
             MediaItem md = mediaItem.build();
-            Log.d(TAG, "downloadRequest: " + md.playbackProperties.uri);
-            DownloadRequest downloadRequest = downloadTracker.getDownloadRequest(checkNotNull(md.playbackProperties).uri);
+            Log.d(TAG, "downloadRequest: " + uri);
+            DownloadRequest downloadRequest = downloadTracker.getDownloadRequest(uri);
+
             if (downloadRequest != null) {
                 MediaItem.Builder builder = md.buildUpon();
                 builder.setMediaId(downloadRequest.id)
                         .setUri(downloadRequest.uri)
                         .setCustomCacheKey(downloadRequest.customCacheKey)
                         .setMimeType(downloadRequest.mimeType)
-                        .setStreamKeys(downloadRequest.streamKeys)
-                        .setDrmKeySetId(downloadRequest.keySetId);
+                        .setStreamKeys(downloadRequest.streamKeys);
+
+                if(keysetid!=null ){
+                    Log.d(TAG, "setUpMedia: setting custom kEYSET ID");
+
+                    builder.setDrmKeySetId(keysetid);
+
+                }
 
                 mediaItems.add(builder.build());
                 Log.d(TAG, "mediaItems: " + mediaItems.get(0).mediaMetadata.title);
@@ -1231,8 +1508,9 @@ EndDwnload checking
                 Log.d(TAG, "setSrc: not Downloaded");
                 mediaItems.add(md);
             }
-
+            return md;
         }
+        return null;
     }
 
     public void setProgressUpdateInterval(final float progressUpdateInterval) {
@@ -1624,4 +1902,50 @@ Could be useful for invite guest role
         initializePlayer();
     }
 
+    public void deleteDownload(ArrayList<String> link, String accountId) {
+
+
+
+        //Check if anyone else is using the asset
+        SharedPreferences prefs = getContext().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor e = prefs.edit();
+        for (String value:link) {
+            srcUri = Uri.parse(value);
+            ACCOUNT_ID = accountId;
+            byte[] data = getBytes(value);
+            if(data!=null){
+                Log.d(TAG, "deleteDownload: Deleting the key for the asset =="+value+accountId);
+                e.remove(value+accountId);
+                e.apply();
+            }else{
+                Log.d(TAG, "deleteDownload: Failed to delete the key for the asset =="+value+accountId);
+            }
+
+            Set<String> set = getAccounts(getContext());
+            int ExistingKeysCounter = 0;
+            Log.d(TAG, "deleteDownload: set List "+set.toString());
+            Iterator<String> itr = set.iterator();
+
+
+
+            while(itr.hasNext()){
+
+                if(prefs.getString(value+itr.next(), null)!=null){
+                   ExistingKeysCounter++;
+                }
+
+            }
+            if(ExistingKeysCounter==0){
+                Log.d(TAG, "deleteDownload: removing the asset witth the path "+value);
+                MediaItem md = setUpMedia(Uri.parse(value),null);
+                downloadTracker.deleteDownload(md);
+            }else{
+                Log.d(TAG, "deleteDownload: Some one else is still using the asset "+value);
+            }
+
+        }
+
+
+
+    }
 }
