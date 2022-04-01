@@ -24,6 +24,10 @@ static NSString *const externalPlaybackActive = @"externalPlaybackActive";
 static int const RCTVideoUnset = -1;
 static NSString * const MediaSelectionGroupKey = @"MediaSelectionGroupKey";
 static NSString * const MediaSelectionOptionKey = @"MediaSelectionOptionKey";
+static NSString* const pitchAlgorithmLowQualityZeroLatency = @"lowQualityZeroLatency";
+static NSString* const pitchAlgorithmSpectral = @"spectral";
+static NSString* const pitchAlgorithmTimeDomain = @"timeDomain";
+static NSString* const pitchAlgorithmVarispeed = @"varispeed";
 static int downloadedTask = 0;
 static NSMutableDictionary<AVAssetDownloadTask *, AVMediaSelection *> *mediaSelectionMap;
 AVAssetDownloadURLSession *assetDownloadURLSession;
@@ -64,6 +68,7 @@ AssetPersistenceManager *assetPersistenceManager;
     AVPlayerItem *_playerItem;
     NSString* originalLink;
     NSString* skdLink;
+    NSString* _pitchAlgorithm;
     // AVPlayerItemAccessLog *_playerItemAccess;
     NSMutableArray *bookLinks ;
     NSDictionary *_source;
@@ -111,8 +116,6 @@ AssetPersistenceManager *assetPersistenceManager;
     float _volume;
     float _rate;
     float _maxBitRate;
-   
-    
     BOOL _automaticallyWaitsToMinimizeStalling;
     BOOL _muted;
     BOOL _paused;
@@ -157,6 +160,7 @@ AssetPersistenceManager *assetPersistenceManager;
         _playbackStalled = NO;
         _rate = 1.0;
         _volume = 1.0;
+        _pitchAlgorithm = pitchAlgorithmLowQualityZeroLatency;
         _resizeMode = @"AVLayerVideoGravityResizeAspectFill";
         _fullscreenAutorotate = YES;
         _fullscreenOrientation = @"all";
@@ -443,9 +447,7 @@ AssetPersistenceManager *assetPersistenceManager;
 {
     
     
-    
-    
-         
+
     
     [self saveDurationWatched];
     
@@ -464,6 +466,7 @@ AssetPersistenceManager *assetPersistenceManager;
             [self addPlayerItemObservers];
             [self setFilter:self->_filterName];
             [self setMaxBitRate:self->_maxBitRate];
+            [self setPitchAlgorithm:self->_pitchAlgorithm];
             
             [_player pause];
             
@@ -605,6 +608,22 @@ AssetPersistenceManager *assetPersistenceManager;
     return  output;
 }
 
+- (void)setPitchAlgorithm:(NSString *)pitchAlgorithm
+{
+  _pitchAlgorithm = pitchAlgorithm;
+  
+//  if ([_pitchAlgorithm isEqualToString:pitchAlgorithmLowQualityZeroLatency]) {
+//    _playerItem.audioTimePitchAlgorithm = AVAudioTimePitchAlgorithmLowQualityZeroLatency;
+//  } else if ([_pitchAlgorithm isEqualToString:pitchAlgorithmSpectral]) {
+//    _playerItem.audioTimePitchAlgorithm = AVAudioTimePitchAlgorithmSpectral;
+//  } else if ([_pitchAlgorithm isEqualToString:pitchAlgorithmTimeDomain]) {
+    _playerItem.audioTimePitchAlgorithm = AVAudioTimePitchAlgorithmTimeDomain;
+    NSLog(@"PITCH ===== ",_playerItem.audioTimePitchAlgorithm);
+//  } else if ([_pitchAlgorithm isEqualToString:pitchAlgorithmVarispeed]) {
+//    _playerItem.audioTimePitchAlgorithm = AVAudioTimePitchAlgorithmVarispeed;
+//  }
+
+}
 
 -(NSURL*)contentKeyLocationForAsset:(NSString*)assetId accountId:(NSString*)accId error:(NSError**)error {
 
@@ -1296,7 +1315,7 @@ AssetPersistenceManager *assetPersistenceManager;
     } else {
         // Fallback on earlier versions
     }
-    
+    [self setPitchAlgorithm:_pitchAlgorithm];
     [self setMaxBitRate:_maxBitRate];
     [self setSelectedAudioTrack:_selectedAudioTrack];
     [self setSelectedTextTrack:_selectedTextTrack];
@@ -1870,24 +1889,25 @@ AssetPersistenceManager *assetPersistenceManager;
     }
     [[NSUserDefaults standardUserDefaults] setFloat:durationWatched forKey:@"durationWatched"];
     for (NSString* key in notSendValue) {
-        [self sendSavedDuration:key WithDuration:notSendValue[key]];
+        [self sendSavedDuration:key WithDuration:notSendValue[key][@"time"] WithClosed:notSendValue[key][@"closed"]];
     }
     if (durationWatched && durationWatched != -1) {
         [[NSUserDefaults standardUserDefaults] setFloat:durationWatched-previousDuration forKey:@"Watched"];
+
         NSString *savedValue = [[NSNumber numberWithFloat:durationWatched-previousDuration] stringValue];
         NSString *chapID = [chapterID stringValue];
-        [self sendSavedDuration:chapID WithDuration:savedValue];
+        [self sendSavedDuration:chapID WithDuration:savedValue WithClosed:[[NSNumber numberWithFloat:CMTimeGetSeconds(_player.currentTime)] stringValue]];
     }
 }
 //Send the watched duration
-- (void)sendSavedDuration:(NSString*)chapterID WithDuration:(NSString*)savedValue{
+- (void)sendSavedDuration:(NSString*)chapterID WithDuration:(NSString*)savedValue WithClosed:(NSString *) closedAt{
     NSLog(@"sendSavedDuration");
     
     id token = [self->_source objectForKey:@"token"];
     NSMutableDictionary *notSendValue = [[[NSUserDefaults standardUserDefaults] objectForKey:@"valueNotSent"] mutableCopy];
     NSLog(@"chapterID == %@savedValue == %@",chapterID ,savedValue);
     NSLog(@"token === %@",token);
-    if (savedValue != 0) {
+    if (savedValue.intValue > 0) {
 //        NSMutableDictionary *dict1 = [[NSMutableDictionary alloc]init];
 //        [dict1 setObject:chapterID forKey:@"chapter_id"];
 //        [dict1 setObject:savedValue forKey:@"time"];
@@ -1900,15 +1920,18 @@ AssetPersistenceManager *assetPersistenceManager;
         double latdouble = [savedValue doubleValue];
 
         int vOut = (int)latdouble;
+        double closedAtdouble = [closedAt doubleValue];
 
-        NSDictionary *json = @{@"chapter_id":chapterID, @"time":@(vOut)};
+        int closedOut = (int)closedAtdouble;
+
+        NSDictionary *json = @{@"chapter_id":chapterID,@"time":[@(vOut) stringValue] ,@"closed_at":[@(closedOut) stringValue]};
         NSArray *array = @[json];
         NSDictionary *jsonBodyDict = @{@"reads":array};
 //        NSLog(@"Send response %@",jsonBodyDict);
         NSData * JsonData =[NSJSONSerialization dataWithJSONObject:jsonBodyDict options:NSJSONWritingPrettyPrinted error:nil];
 //        NSLog(@"Send JsonData %@",JsonData);
         
-        NSString *urlString = [NSString stringWithFormat:@"https://swann.k8s.satoripop.io/api/v1/chapters/read"];
+        NSString *urlString = [NSString stringWithFormat:@"https://api.swann-app.com/api/v1/chapters/read"];
 
 
         NSMutableURLRequest *urlRequest  = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:urlString]];
@@ -1939,20 +1962,20 @@ AssetPersistenceManager *assetPersistenceManager;
                 if ([[NSUserDefaults standardUserDefaults] objectForKey:@"valueNotSent"]) {
                     notSendValue = [[[NSUserDefaults standardUserDefaults] objectForKey:@"valueNotSent"] mutableCopy];
                     if ( [notSendValue objectForKey:chapterID] != nil) {
-                        float oldValue =[[notSendValue objectForKey:chapterID] floatValue];
+                        float oldValue =[[[notSendValue objectForKey:chapterID] objectForKey:@"time"] floatValue];
                         float newValue = [savedValue floatValue] ;
                         if (oldValue != newValue) {
-                            [notSendValue setValue:[NSNumber numberWithFloat:newValue + oldValue] forKey:chapterID];
+                            [notSendValue setValue:@{@"time":[NSNumber numberWithFloat:newValue + oldValue],@"closed":closedAt} forKey:chapterID];
                             [[NSUserDefaults standardUserDefaults] setObject:notSendValue forKey:@"valueNotSent"];
                         }
                     }else{
                         float newValue = [savedValue floatValue];
-                        [notSendValue setValue:[NSNumber numberWithFloat:newValue] forKey:chapterID ];
+                        [notSendValue setValue:@{@"time":[NSNumber numberWithFloat:newValue],@"closed":closedAt} forKey:chapterID ];
                         [[NSUserDefaults standardUserDefaults] setObject:notSendValue forKey:@"valueNotSent"];
                     }
                 }else{
                     float newValue = [savedValue floatValue];
-                    [notSendValue setValue:[NSNumber numberWithFloat:newValue] forKey:chapterID];
+                    [notSendValue setValue:@{@"time":[NSNumber numberWithFloat:newValue],@"closed":closedAt} forKey:chapterID];
                     [[NSUserDefaults standardUserDefaults] setObject:notSendValue forKey:@"valueNotSent"];
                 }
             }
@@ -3017,7 +3040,7 @@ didCancelLoadingRequest:(AVAssetResourceLoadingRequest *)loadingRequest {
                 NSLog(@"remote");
             if (certificateStringUrl != nil) {
                 NSURL *certificateURL = [NSURL URLWithString:[certificateStringUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
-                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                //dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
                     NSData *certificateData = [NSData dataWithContentsOfURL:certificateURL];
                     if ([self->_drm objectForKey:@"base64Certificate"]) {
                         certificateData = [[NSData alloc] initWithBase64EncodedData:certificateData options:NSDataBase64DecodingIgnoreUnknownCharacters];
@@ -3177,7 +3200,7 @@ didCancelLoadingRequest:(AVAssetResourceLoadingRequest *)loadingRequest {
                         [self finishLoadingWithError:licenseError];
                         self->_requestingCertificateErrored = YES;
                     }
-                });
+                //});
                 return YES;
             } else {
                 NSError *licenseError = [NSError errorWithDomain: @"RCTVideo"
